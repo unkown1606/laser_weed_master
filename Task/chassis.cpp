@@ -1,9 +1,9 @@
-
 #include "chassis.h"
 #include <math.h>
 #include "dbus.h"
 
 #include "lkMotor.h"
+
 //轮子电机
 LKMotor wheel[4] = {
 	LKMotor(lkCan1,1),
@@ -23,10 +23,9 @@ LKMotor expand[1] = {
 	LKMotor(lkCan1,7)
 };
 
-
 #define MAX_WHEEL_SPD 1200
 
-
+//LK电机不能用速度模式控制，应该用位置模式，当通讯连接不上时电机会持续执行最后的命令
 
 Chassis::Chassis()
 {
@@ -62,8 +61,10 @@ void Chassis::ctrl(float spdX,float spdY,float spdZ)
 	spdY = rc.leftLR * 2000 + 10.204;
 	spdZ = rc.rightLR * 1000 - 10.204;
 
-//	wheel[0].ctrlSpeed(spdX);
-	
+	wheel[0].ctrlSpeed(0);
+	wheel[1].ctrlSpeed(0);
+	wheel[2].ctrlSpeed(0);
+	wheel[3].ctrlSpeed(0);
 }
 
 	//获取当前机器人四个轮子的间距
