@@ -85,9 +85,9 @@ struct LKMotor
 		float speed;	//速度
 		float encoder;	//编码器
 		float angle;	//总角度
-	}fb;	
-	
-	
+	}fb;
+
+
 	LKMotor(LKMotorCanNum canx,int motorid);	
 	void readPid();
 	void fbDataHandle(uint8_t *data);

@@ -11,11 +11,11 @@ struct Chassis
 	float wheelVelX[4];
 	float wheelVelY[4];
 	float wheelSpd[4];	//轮子速度
-	float rudderAng[4];	//舵角度
+	float rudderAng[2];	//舵角度
 	float trueRudderAng[4];//实际使用的舵方向
 	float trueWheelSpd[4];//实际使用的轮速度
 	int8_t wheelTurn[4];	//轮子是否需要反转
-	
+
 	struct 
 	{
 		float width;	//机身宽度

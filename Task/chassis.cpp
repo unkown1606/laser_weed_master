@@ -29,14 +29,26 @@ Chassis::Chassis()
 {
 	mech.width = 1.2;
 	mech.length = 1.4;
-	
+
 	// 设置PID参数
 	for(uint8_t i = 0;i < 4;i ++)
 	{
-		wheel[i].pidSet.spdKp = 10;
-
+		wheel[i].pidSet.angKp = 10;
+		wheel[i].pidSet.spdKp = 1;
+		wheel[i].pidSet.iqKp = 1;
 		wheel[i].updatePid();
 	}
+	for(uint8_t i = 0;i < 2;i ++)
+	{
+		rudder[i].pidSet.angKp = 10;
+		rudder[i].pidSet.spdKp = 1;
+		rudder[i].pidSet.iqKp = 1;
+		rudder[i].updatePid();
+	}
+	expand.pidSet.angKp = 10;
+	expand.pidSet.spdKp = 1;
+	expand.pidSet.iqKi = 1;
+	expand.updatePid();
 }
 
 
@@ -70,6 +82,11 @@ void Chassis::ctrl(float spdX,float spdY,float spdZ)
 	rudder[0].ctrlSpeed(0);
 	rudder[1].ctrlSpeed(0);
 	expand.ctrlSpeed(0);
+
+//	rudderAng[0] = spdY * 90 ;
+//	rudderAng[1] = spdZ * 90 ;
+//	rudder[0].ctrlPositon(rudderAng[0]);
+//	rudder[1].ctrlPositon(rudderAng[1]);
 }
 
 	//获取当前机器人四个轮子的间距
