@@ -3,23 +3,29 @@
 
 #include "main.h"
 #include "board.h"
-
-
-
 #include "slidetable.h"
 
-// 多滑台控制
-struct MultiTable
+//云台
+struct Gimbal
 {
 public:
-	SlideTable (&table)[4];
-
-	MultiTable();
-
-	void posCtrl();
-	void startPosOffset();
+	Gimbal();
 	void ctrlMain();
 };
+
+
+// 多滑台控制
+//struct MultiTable
+//{
+//public:
+//	SlideTable (&table)[4];
+
+//	MultiTable();
+
+//	void posCtrl();
+//	void startPosOffset();
+//	void ctrlMain();
+//};
 
 
 

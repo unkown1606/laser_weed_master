@@ -19,9 +19,7 @@ LKMotor rudder[2] = {
 };
 
 //伸缩电机
-LKMotor expand[1] = {
-	LKMotor(lkCan1,7)
-};
+LKMotor expand = LKMotor(lkCan1,7);
 
 #define MAX_WHEEL_SPD 1200
 
@@ -36,7 +34,7 @@ Chassis::Chassis()
 	for(uint8_t i = 0;i < 4;i ++)
 	{
 		wheel[i].pidSet.spdKp = 10;
-		
+
 		wheel[i].updatePid();
 	}
 }
@@ -44,7 +42,7 @@ Chassis::Chassis()
 
 void changeWidth(float changeSpd)
 {
-	
+
 }
 
 
@@ -61,10 +59,17 @@ void Chassis::ctrl(float spdX,float spdY,float spdZ)
 	spdY = rc.leftLR * 2000 + 10.204;
 	spdZ = rc.rightLR * 1000 - 10.204;
 
+	float alpha = atan2(mech.length,mech.width);
+	
+	
+	
 	wheel[0].ctrlSpeed(0);
 	wheel[1].ctrlSpeed(0);
 	wheel[2].ctrlSpeed(0);
 	wheel[3].ctrlSpeed(0);
+	rudder[0].ctrlSpeed(0);
+	rudder[1].ctrlSpeed(0);
+	expand.ctrlSpeed(0);
 }
 
 	//获取当前机器人四个轮子的间距

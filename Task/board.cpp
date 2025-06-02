@@ -7,7 +7,8 @@
 #include "chassis.h"
 #include "gimbal.h"
 Chassis chassis;
-MultiTable multiTable;
+//MultiTable multiTable;
+Gimbal gimbal;
 
 #define TICK_PER_SECOND 1000
 #define TICK_US (1000000 / TICK_PER_SECOND)
@@ -48,7 +49,8 @@ void schedule()
 	if(sysTickTime%2 == 0)
 	{
 		chassis.ctrl(0,0,0);
-		multiTable.ctrlMain();
+//		multiTable.ctrlMain();
+		gimbal.ctrlMain();
 	}
 	
 	
