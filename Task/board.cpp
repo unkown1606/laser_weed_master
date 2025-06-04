@@ -49,7 +49,7 @@ void schedule()
 	
 	if(sysTickTime%2 == 0)
 	{
-		chassis.ctrl(0,0);
+		chassis.ctrl();
 //		multiTable.ctrlMain();
 		gimbal.ctrlMain();
 

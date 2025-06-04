@@ -17,8 +17,8 @@ LKMotor rudder[2] = {
 	LKMotor(lkCan1,5)
 };
 
-//伸缩电机
-LKMotor expand = LKMotor(lkCan1,7);
+//丝杠电机
+LKMotor screw = LKMotor(lkCan1,7);
 
 #define MAX_WHEEL_SPD 1200
 
@@ -49,26 +49,21 @@ Chassis::Chassis()
 		rudder[i].pidSet.iqKp = 1;
 		rudder[i].updatePid();
 	}
-	expand.pidSet.angKp = 10;
-	expand.pidSet.spdKp = 1;
-	expand.pidSet.iqKi = 1;
-	expand.updatePid();
+	screw.pidSet.angKp = 10;
+	screw.pidSet.spdKp = 1;
+	screw.pidSet.iqKi = 1;
+	screw.updatePid();
 }
 
-
-void changeWidth(float changeSpd)
+void Chassis::changeWidth()
 {
-
+	screw.ctrlSpeed(0);
 }
 
-void Chassis::ctrl(float v,float w)
+void Chassis::move()
 {
-	//遥控器加偏置
-	v = rc.leftFB * 2000 - 10.204;
-	w = rc.leftLR * 2000 + 10.204;
-
-	float alpha = atan2(mech.width, 2*v/w + mech.length);
-	float beta = atan2(mech.width, 2*v/w - mech.length);
+	alpha = atan2(mech.width, 2*v/w + mech.length);
+	beta = atan2(mech.width, 2*v/w - mech.length);
 	r[0] = mech.width / (2 * sinf(alpha));
 	r[1] = mech.width / (2 * sinf(beta));
 	vel[0] = w * r[0];
@@ -82,7 +77,17 @@ void Chassis::ctrl(float v,float w)
 	wheel[3].ctrlSpeed(0);
 	rudder[0].ctrlSpeed(0);
 	rudder[1].ctrlSpeed(0);
-	expand.ctrlSpeed(0);
+}
+
+void Chassis::ctrl()
+{
+	//遥控器加偏置
+	v = rc.leftFB * 2000 - 10.204;
+	w = rc.leftLR * 2000 + 10.204;
+	u = rc.rightLR * 2000;
+
+	move();
+	changeWidth();
 }
 
 void Chassis::chassisExhaustion()
@@ -95,7 +100,7 @@ void Chassis::chassisExhaustion()
 	{
 		rudder[i].stopMotor();
 	}
-	expand.stopMotor();
+	screw.stopMotor();
 }
 
 void Chassis::chassisOn()
@@ -108,7 +113,7 @@ void Chassis::chassisOn()
 	{
 		rudder[i].runMotor();
 	}
-	expand.runMotor();
+	screw.runMotor();
 }
 
 	//获取当前机器人四个轮子的间距
