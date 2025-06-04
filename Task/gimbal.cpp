@@ -1,7 +1,5 @@
 #include "gimbal.h"
-
 #include "laser.h"
-
 #include "lkmotor.h"
 #include "dbus.h"
 
@@ -32,6 +30,17 @@ void Gimbal::ctrlMain()
 	pitch.ctrlSpeed(0);
 }
 
+void Gimbal::gimbalExhaustion()
+{
+	yaw.stopMotor();
+	pitch.stopMotor();
+}
+
+void Gimbal::gimbalOn()
+{
+	yaw.runMotor();
+	pitch.runMotor();
+}
 
 //// X电机 前后
 //LKMotor slideMotorX[4] = {

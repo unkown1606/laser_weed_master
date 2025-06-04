@@ -1,10 +1,9 @@
 #include "chassis.h"
 #include <math.h>
 #include "dbus.h"
-
 #include "lkMotor.h"
 
-//轮子电机
+//轮电机
 LKMotor wheel[4] = {
 	LKMotor(lkCan1,1),
 	LKMotor(lkCan1,2),
@@ -22,6 +21,11 @@ LKMotor rudder[2] = {
 LKMotor expand = LKMotor(lkCan1,7);
 
 #define MAX_WHEEL_SPD 1200
+
+#define RADIAN_TO_DEGREE 57.3f
+#define DEGREE_TO_RADIAN 0.017452f
+
+uint8_t enableMotorOut = 1 ;
 
 //LK电机不能用速度模式控制，应该用位置模式，当通讯连接不上时电机会持续执行最后的命令
 
@@ -57,24 +61,21 @@ void changeWidth(float changeSpd)
 
 }
 
-
-#define RADIAN_TO_DEGREE 57.3f
-#define DEGREE_TO_RADIAN 0.017452f
-
-
-
-uint8_t enableMotorOut = 1 ;
-void Chassis::ctrl(float spdX,float spdY,float spdZ)
+void Chassis::ctrl(float v,float w)
 {
 	//遥控器加偏置
-	spdX = rc.leftFB * 2000 - 10.204;
-	spdY = rc.leftLR * 2000 + 10.204;
-	spdZ = rc.rightLR * 1000 - 10.204;
+	v = rc.leftFB * 2000 - 10.204;
+	w = rc.leftLR * 2000 + 10.204;
 
-	float alpha = atan2(mech.length,mech.width);
-	
-	
-	
+	float alpha = atan2(mech.width, 2*v/w + mech.length);
+	float beta = atan2(mech.width, 2*v/w - mech.length);
+	r[0] = mech.width / (2 * sinf(alpha));
+	r[1] = mech.width / (2 * sinf(beta));
+	vel[0] = w * r[0];
+	vel[1] = w * r[1];
+	wheelSpd[0] = wheelSpd[2] = vel[0];
+	wheelSpd[1] = wheelSpd[3] = vel[1];
+
 	wheel[0].ctrlSpeed(0);
 	wheel[1].ctrlSpeed(0);
 	wheel[2].ctrlSpeed(0);
@@ -82,11 +83,32 @@ void Chassis::ctrl(float spdX,float spdY,float spdZ)
 	rudder[0].ctrlSpeed(0);
 	rudder[1].ctrlSpeed(0);
 	expand.ctrlSpeed(0);
+}
 
-//	rudderAng[0] = spdY * 90 ;
-//	rudderAng[1] = spdZ * 90 ;
-//	rudder[0].ctrlPositon(rudderAng[0]);
-//	rudder[1].ctrlPositon(rudderAng[1]);
+void Chassis::chassisExhaustion()
+{
+	for(uint8_t i = 0;i < 4;i ++)
+	{
+		wheel[i].stopMotor();
+	}
+	for(uint8_t i = 0;i < 2;i ++)
+	{
+		rudder[i].stopMotor();
+	}
+	expand.stopMotor();
+}
+
+void Chassis::chassisOn()
+{
+	for(uint8_t i = 0;i < 4;i ++)
+	{
+		wheel[i].runMotor();
+	}
+	for(uint8_t i = 0;i < 2;i ++)
+	{
+		rudder[i].runMotor();
+	}
+	expand.runMotor();
 }
 
 	//获取当前机器人四个轮子的间距

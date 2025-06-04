@@ -14,7 +14,8 @@ Gimbal gimbal;
 #define TICK_US (1000000 / TICK_PER_SECOND)
 
 //-Wno-deprecated-register
-uint64_t sysTickTime =0;
+uint64_t sysTickTime = 0;
+uint8_t isExhaustion = 1;
 
 void allInit()
 {
@@ -29,9 +30,9 @@ void allInit()
 	
 	visionInit();
 	canInit();
-	
-	
-	
+
+
+
 }
 
 //2O 3R 4G
@@ -48,12 +49,24 @@ void schedule()
 	
 	if(sysTickTime%2 == 0)
 	{
-		chassis.ctrl(0,0,0);
+		chassis.ctrl(0,0);
 //		multiTable.ctrlMain();
 		gimbal.ctrlMain();
+
+		//SWB脱力上力
+		if(rc.swB == 0 && isExhaustion == 1)
+		{
+			isExhaustion = 0;
+			chassis.chassisExhaustion();
+			gimbal.gimbalExhaustion();
+		}
+		else if(rc.swB != 0 && isExhaustion == 0)
+		{
+			isExhaustion = 1;
+			chassis.chassisOn();
+			gimbal.gimbalOn();
+		}
 	}
-	
-	
 }
 
 

@@ -7,27 +7,27 @@ struct Chassis
 {
 	public:
 	Chassis();
-		//ËÄ¸öÂÖ×ÓÆ½ÒÆÏßËÙ¶È
-	float wheelVelX[4];
-	float wheelVelY[4];
-	float wheelSpd[4];	//ÂÖ×ÓËÙ¶È
-	float rudderAng[2];	//¶æ½Ç¶È
-	float trueRudderAng[4];//Êµ¼ÊÊ¹ÓÃµÄ¶æ·½Ïò
-	float trueWheelSpd[4];//Êµ¼ÊÊ¹ÓÃµÄÂÖËÙ¶È
-	int8_t wheelTurn[4];	//ÂÖ×ÓÊÇ·ñĞèÒª·´×ª
+	float r[2];				//å³ã€å·¦è½®è½¬å¼¯åŠå¾„
+	float vel[2];			//å³ã€å·¦è½®å‰å‘é€Ÿåº¦
+	float wheelSpd[4];		//å››ä¸ªè½®å­çš„é€Ÿåº¦
+	float rudderAng[2];		//å³å·¦ä¸¤ä¾§èˆµç”µæœºè§’åº¦
+	float trueRudderAng[4];	//
+	float trueWheelSpd[4];	//
+	int8_t wheelTurn[4];	//
 
 	struct 
 	{
-		float width;	//»úÉí¿í¶È
-		float length;	//»úÉí³¤¶È
+		float width;
+		float length;
 		float setWidth;
 	}mech;
-	//µ×ÅÌ¿ØÖÆ
-	void ctrl(float spdX,float spdY,float spdZ);
-	//¸Ä±ä¿í¶È
-	void changeWidth(float changeSpd);
-	
-	
+
+	void ctrl(float v,float w);		//åº•ç›˜çš„æ§åˆ¶
+
+	void changeWidth(float changeSpd);	//ä¸æ å®½åº¦æ”¹å˜
+	//åº•ç›˜è„±ç¦»ä¸ŠåŠ›
+	void chassisExhaustion();
+	void chassisOn();
 };
 
 

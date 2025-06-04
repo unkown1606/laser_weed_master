@@ -21,10 +21,12 @@ enum LkMotorCmd : uint8_t
 	cmdReadPid = 0x30,	//读取PID参数
 	cmdWritePidRam = 0x31,//写入PID参数到RAM
 	cmdWritePidRom = 0x32,//写入PID参数到ROM
+	cmdCtrlStop = 0x80,//电机进入关闭状态
+	cmdCtrlRun = 0x88,//电机进入开启状态
 	cmdCtrlTorque = 0xA1,//转矩闭环
 	cmdCtrlSpeed = 0xA2,//速度闭环
 	cmdCtrlPostion1 = 0xA3,//位置闭环
-	
+	cmdCtrlIncrement = 0xA7,//增量位置闭环
 };
 
 class CanMsg
@@ -85,6 +87,7 @@ struct LKMotor
 		float speed;	//速度
 		float encoder;	//编码器
 		float angle;	//总角度
+		float positiveAng;	//单环正角度，位于0到360之间
 	}fb;
 
 
@@ -93,10 +96,13 @@ struct LKMotor
 	void fbDataHandle(uint8_t *data);
 	void updatePid();
 	
+	void stopMotor();
+	void runMotor();
+	
 	void ctrlCurent(float torque);
 	void ctrlSpeed(float speed);
 	void ctrlPositon(double pos);
-	
+	void ctrlPosIncrement(double Inc);
 	
 };
 #ifdef __cplusplus

@@ -65,6 +65,21 @@ void LKMotor::updatePid()
 	}
 }
 
+// 电机关闭
+void LKMotor::stopMotor()
+{
+	CanMsg msg(info.canx, info.canId);
+	msg.data[0] = cmdCtrlStop;
+	sendMotorMsg(msg);
+}
+
+// 电机开启
+void LKMotor::runMotor()
+{
+	CanMsg msg(info.canx, info.canId);
+	msg.data[0] = cmdCtrlRun;
+	sendMotorMsg(msg);
+}
 
 // 控制力矩：Nm
 void LKMotor::ctrlCurent(float torque)
@@ -107,6 +122,20 @@ void LKMotor::ctrlPositon(double pos)
 	sendMotorMsg(msg);
 }
 
+// 增量位置控制
+void LKMotor::ctrlPosIncrement(double inc)
+{
+	CanMsg msg(info.canx, info.canId);
+	msg.data[0] = cmdCtrlIncrement;
+
+	int32_t incControl =inc*100;
+	msg.data[4] = *(uint8_t *)(&incControl);
+	msg.data[5] = *((uint8_t *)(&incControl) + 1);
+	msg.data[6] = *((uint8_t *)(&incControl) + 2);
+	msg.data[7] = *((uint8_t *)(&incControl) + 3);
+	sendMotorMsg(msg);
+}
+
 // 处理CAN反馈数据
 void LKMotor::fbDataHandle(uint8_t *data)
 {
@@ -142,6 +171,7 @@ void LKMotor::fbDataHandle(uint8_t *data)
 			ori.round++;
 		 ori.lastEncoder = ori.encoder;
 		fb.angle = ori.round * 360 + fb.encoder;
+		fb.positiveAng = (fb.encoder > 0 ? fb.encoder : (fb.encoder+360));
 	}
 }
 

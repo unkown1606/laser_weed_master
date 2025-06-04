@@ -9,28 +9,28 @@
 #define DBUS_UART 		USART2
 
 /**************************
-		ƒ£ Ω2
+		Ê®°Âºè2
 	ch3			ch2
 	  |			 |
-ch4	°™°™+°™°™	ch1°™°™+°™°™
+ch4	‚Äî‚Äî+‚Äî‚Äî	ch1‚Äî‚Äî+‚Äî‚Äî
 	  |			 |
 **************************/
 
 
 FlyskyKey rc;
 
-uint8_t sbusRxBuffer[RC_FRAME_LENGTH]; // DMA¥´ ‰ÕÍµƒ ˝æ›
-uint8_t sbusRxBuf[RC_FRAME_LENGTH*2]; // DMAª∫¥Ê«¯
+uint8_t sbusRxBuffer[RC_FRAME_LENGTH]; // DMA‰º†ËæìÂÆåÁöÑÊï∞ÊçÆ
+uint8_t sbusRxBuf[RC_FRAME_LENGTH*2]; // DMAÁºìÂ≠òÂå∫
 void sbusHandleData(volatile const uint8_t *SBUS_buf);
 void dbusHandleData(volatile const uint8_t *SBUS_buf);
-int16_t dbusCH[SBUS_RX_BUF_NUM]; // µ±«∞Õ®µ¿÷µ
+int16_t dbusCH[SBUS_RX_BUF_NUM]; // ÂΩìÂâçÈÄöÈÅìÂÄº
 
 
 void dbusInit()
 {
 
     LL_USART_EnableDMAReq_RX(DBUS_UART);
-	//DBUS ¥Æø⁄DMA…Ë÷√
+	//DBUS ‰∏≤Âè£DMAËÆæÁΩÆ
 	LL_DMA_SetMemoryAddress(DBUS_DMA, DBUS_CH,(uint32_t)sbusRxBuf);
 	LL_DMA_SetPeriphAddress(DBUS_DMA, DBUS_CH,(uint32_t)&DBUS_UART->RDR);
 	LL_DMA_SetDataLength(DBUS_DMA, DBUS_CH, (uint32_t)sizeof(sbusRxBuf));
@@ -47,19 +47,19 @@ void dbusCallBack()
 {
 	if(LL_USART_IsActiveFlag_ORE(DBUS_UART))
 	{
-		// «Â≥˝ø’œ–÷–∂œ±Í÷æ
+		// Ê∏ÖÈô§Á©∫Èó≤‰∏≠Êñ≠Ê†áÂøó
         LL_USART_ClearFlag_ORE(DBUS_UART);
         LL_USART_ReceiveData8(DBUS_UART);
 	}
 	if(LL_USART_IsActiveFlag_IDLE(DBUS_UART))
 	{
-	// «Â≥˝ø’œ–÷–∂œ±Í÷æ
+	// Ê∏ÖÈô§Á©∫Èó≤‰∏≠Êñ≠Ê†áÂøó
         LL_USART_ClearFlag_IDLE(DBUS_UART);
         LL_USART_ReceiveData8(DBUS_UART);
 
         LL_DMA_DisableStream(DBUS_DMA, DBUS_CH);
         
-		//ªÒ»°Ω” ’µΩµƒ ˝æ›≥§∂»
+		//Ëé∑ÂèñÊé•Êî∂Âà∞ÁöÑÊï∞ÊçÆÈïøÂ∫¶
 		
 		dmalen = sizeof(sbusRxBuf) - LL_DMA_GetDataLength(DBUS_DMA, DBUS_CH);
 		
@@ -91,26 +91,26 @@ uint32_t dbusResTimeLast=0;
 uint32_t dbusResTimeErr=0;
 
 
-// ˝æ›¥¶¿Ì
+//Êï∞ÊçÆÂ§ÑÁêÜ
 void sbusHandleData(volatile const uint8_t *SBUS_buf)
 {
 	dbusResTime = sysTickTime;
 	dbusResTimeErr = dbusResTime - dbusResTimeLast;
 	dbusResTimeLast = dbusResTime;
-	//°¯ Ω´¥Æø⁄÷µ◊™ªª≥…Õ®µ¿÷µ
+	//‚ñ≤ Â∞Ü‰∏≤Âè£ÂÄºËΩ¨Êç¢ÊàêÈÄöÈÅìÂÄº
 	if(SBUS_buf[0] == 0X0F && SBUS_buf[24] == 0X00)
 	{
-		//”“≤‡◊Û”“
+		//Âè≥‰æßÂ∑¶Âè≥
 		dbusCH[0] = ((int16_t)SBUS_buf[1] >> 0 | ((int16_t)SBUS_buf[2] << 8 )) & 0x07FF;
-		//”“≤‡…œœ¬
+		//Âè≥‰æß‰∏ä‰∏ã
 		dbusCH[1] = ((int16_t)SBUS_buf[2] >> 3 | ((int16_t)SBUS_buf[3] << 5 )) & 0x07FF;
-		//◊Û≤‡…œœ¬
+		//Â∑¶‰æß‰∏ä‰∏ã
 		dbusCH[2] = ((int16_t)SBUS_buf[3] >> 6 | ((int16_t)SBUS_buf[4] << 2 ) | (int16_t)SBUS_buf[5] << 10 ) & 0x07FF;
-		//◊Û≤‡◊Û”“
+		//Â∑¶‰æßÂ∑¶Âè≥
 		dbusCH[3] = ((int16_t)SBUS_buf[5] >> 1 | ((int16_t)SBUS_buf[6] << 7 )) & 0x07FF;
-		//◊Û–˝≈•
+		//Â∑¶ÊóãÈíÆ
 		dbusCH[4] = ((int16_t)SBUS_buf[6] >> 4 | ((int16_t)SBUS_buf[7] << 4 )) & 0x07FF;
-		//”“–˝≈•
+		//Âè≥ÊóãÈíÆ
 		dbusCH[5] = ((int16_t)SBUS_buf[7] >> 7 | ((int16_t)SBUS_buf[8] << 1 ) | (int16_t)SBUS_buf[9] << 9 ) & 0x07FF;
 		//SWA
 		dbusCH[6] = ((int16_t)SBUS_buf[9] >> 2 | ((int16_t)SBUS_buf[10] << 6 )) & 0x07FF;
@@ -120,7 +120,7 @@ void sbusHandleData(volatile const uint8_t *SBUS_buf)
 		dbusCH[8] = ((int16_t)SBUS_buf[12] << 0 | ((int16_t)SBUS_buf[13] << 8 )) & 0x07FF;
 		//SWD
 		dbusCH[9] = ((int16_t)SBUS_buf[13] >> 3 | ((int16_t)SBUS_buf[14] << 5 )) & 0x07FF;
-		//ø’
+		//Á©∫
 		dbusCH[10] = ((int16_t)SBUS_buf[14] >> 6 | ((int16_t)SBUS_buf[15] << 2 ) | (int16_t)SBUS_buf[16] << 10 ) & 0x07FF;
 		dbusCH[11] = ((int16_t)SBUS_buf[16] >> 1 | ((int16_t)SBUS_buf[17] << 7 )) & 0x07FF;
 		dbusCH[12] = ((int16_t)SBUS_buf[17] >> 4 | ((int16_t)SBUS_buf[18] << 4 )) & 0x07FF;
@@ -130,7 +130,7 @@ void sbusHandleData(volatile const uint8_t *SBUS_buf)
 		
 		for(int i=0;i<10;i++)
 			dbusCH[i] -= 1023;
-		//¬˙¡ø≥Ã 784
+		//Êª°ÈáèÁ®ã 784
 		for( int i=0;i<4;i++)
 		{
 			
@@ -151,30 +151,30 @@ void sbusHandleData(volatile const uint8_t *SBUS_buf)
 }
 
 
-// ˝æ›¥¶¿Ì
+//Êï∞ÊçÆÂ§ÑÁêÜ
 void dbusHandleData(volatile const uint8_t *SBUS_buf)
 {
 	dbusResTime = sysTickTime;
 	dbusResTimeErr = dbusResTime - dbusResTimeLast;
 	dbusResTimeLast = dbusResTime;
-	//°¯ Ω´¥Æø⁄÷µ◊™ªª≥…Õ®µ¿÷µ
+	//‚ñ≤ Â∞Ü‰∏≤Âè£ÂÄºËΩ¨Êç¢ÊàêÈÄöÈÅìÂÄº
 	
-	// ”““°∏À∫·œÚ  ∑∂Œß+-660    [0]8bits+[1]3bits
+	// Âè≥ÊëáÊùÜÊ®™Âêë  ËåÉÂõ¥+-660    [0]8bits+[1]3bits
 	dbusCH[0] =((SBUS_buf[0] | (SBUS_buf[1] << 8)) & 0x07ff) - 1024; // Channel 0
-	// ”““°∏À◊›œÚ   ∑∂Œß+-660   [1]5bits+[2]6bits
+	// Âè≥ÊëáÊùÜÁ∫µÂêë   ËåÉÂõ¥+-660   [1]5bits+[2]6bits
 	dbusCH[1] = (((SBUS_buf[1] >> 3) | (SBUS_buf[2] << 5)) & 0x07ff) - 1024; // Channel 1
-	// ◊Û“°∏À◊›œÚ   ∑∂Œß+-660   [4]7bits+[5]4bits
+	// Â∑¶ÊëáÊùÜÁ∫µÂêë   ËåÉÂõ¥+-660   [4]7bits+[5]4bits
 	dbusCH[2] = (((SBUS_buf[4] >> 1) | (SBUS_buf[5] << 7)) & 0x07ff) - 1024; // Channel 3
-	// ◊Û“°∏À∫·œÚ   ∑∂Œß+-660   [2]2bits+[3]8bits+[4]1bit
+	// Â∑¶ÊëáÊùÜÊ®™Âêë   ËåÉÂõ¥+-660   [2]2bits+[3]8bits+[4]1bit
 	dbusCH[3] = (((SBUS_buf[2] >> 6) | (SBUS_buf[3] << 2) | (SBUS_buf[4] << 10)) & 0x07ff) - 1024; // Channel 2
-	// ◊Û…œΩ«≤¶¬÷ ∑∂Œß+-660 [16]8bis+[17]3bits
+	// Â∑¶‰∏äËßíÊã®ËΩÆ ËåÉÂõ¥+-660 [16]8bis+[17]3bits
 	dbusCH[4] = -(((SBUS_buf[16] | (SBUS_buf[17] << 8)) & 0x07ff) - 1024);
-	// ◊Û±ﬂø™πÿ  132 …œ÷–œ¬     [5]2bits
+	// Â∑¶ËæπÂºÄÂÖ≥  132 ‰∏ä‰∏≠‰∏ã     [5]2bits
 	dbusCH[5] = ((SBUS_buf[5] >> 4) & 0x000C) >> 2; // Switch left
-	// ”“±ﬂø™πÿ  132 …œ÷–œ¬     [5]2bits
+	// Âè≥ËæπÂºÄÂÖ≥  132 ‰∏ä‰∏≠‰∏ã     [5]2bits
 	dbusCH[6] = ((SBUS_buf[5] >> 4) & 0x0003); // Switch right
 	
-	//¬˙¡ø≥Ã 784
+	//Êª°ÈáèÁ®ã 784
 	for( int i=0;i<4;i++)
 		rc.ch[i] = dbusCH[i]/660.0f;
 		

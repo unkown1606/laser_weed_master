@@ -5,13 +5,13 @@
 
 #include <stdint.h>
 
-#define SBUS_RX_BUF_NUM 16 ///< DMAÊý¾Ý³¤¶È
-#define RC_FRAME_LENGTH 25u ///<ßb¿ØÆ÷½ÓÊÕÊý¾Ý°ü³¤¶È
+#define SBUS_RX_BUF_NUM 16 ///< DMAæ•°æ®é•¿åº¦
+#define RC_FRAME_LENGTH 25u ///<é™æŽ§å™¨æŽ¥æ”¶æ•°æ®åŒ…é•¿åº¦
 /**************************
-		Ä£Ê½2
+		æ¨¡å¼2
 	ch3			ch2
 	  |			 |
-ch4	¡ª¡ª+¡ª¡ª	ch1¡ª¡ª+¡ª¡ª
+ch4	â€”â€”+â€”â€”	ch1â€”â€”+â€”â€”
 	  |			 |
 **************************/
 struct FlyskyKey
