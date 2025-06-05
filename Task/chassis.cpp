@@ -62,12 +62,19 @@ void Chassis::changeWidth()
 
 void Chassis::move()
 {
-	alpha = atan2(mech.width, 2*v/w + mech.length);
-	beta = atan2(mech.width, 2*v/w - mech.length);
-	r[0] = mech.width / (2 * sinf(alpha));
-	r[1] = mech.width / (2 * sinf(beta));
+	alpha = atan2(mech.width, 2*v/w + mech.length) * RADIAN_TO_DEGREE;
+	beta = atan2(mech.width, 2*v/w - mech.length) * RADIAN_TO_DEGREE;
+	r[0] = mech.width / (2 * sinf(alpha * DEGREE_TO_RADIAN));
+	r[1] = mech.width / (2 * sinf(beta * DEGREE_TO_RADIAN));
 	vel[0] = w * r[0];
 	vel[1] = w * r[1];
+	if (alpha > 90 && beta > 90)
+	{
+		alpha = alpha - 180;
+		beta = beta - 180;
+		vel[0] = -vel[0];
+		vel[1] = -vel[1];
+	}
 	wheelSpd[0] = wheelSpd[2] = vel[0];
 	wheelSpd[1] = wheelSpd[3] = vel[1];
 
@@ -81,10 +88,24 @@ void Chassis::move()
 
 void Chassis::ctrl()
 {
-	//遥控器加偏置
-	v = rc.leftFB * 2000 - 10.204;
-	w = rc.leftLR * 2000 + 10.204;
-	u = rc.rightLR * 2000;
+	if(ABS(rc.leftFB) > 0.1 && ABS(rc.leftLR) > 0.1)
+	{
+		//遥控器加偏置
+		v = rc.leftFB * 2000 - 10.204;
+		w = (v > 0 ? -1 : 1) * (rc.leftLR * 2000 + 10.204);
+	}
+	else
+	{
+		v = w = 0;
+	}
+	if(ABS(rc.rightLR) > 0.1)
+	{
+		u = -rc.rightLR * 2000;
+	}
+	else
+	{
+		u = 0;
+	}
 
 	move();
 	changeWidth();
@@ -92,28 +113,29 @@ void Chassis::ctrl()
 
 void Chassis::chassisExhaustion()
 {
-	for(uint8_t i = 0;i < 4;i ++)
-	{
-		wheel[i].stopMotor();
-	}
-	for(uint8_t i = 0;i < 2;i ++)
-	{
-		rudder[i].stopMotor();
-	}
+//	wheel[0].stopMotor();
+//	wheel[1].stopMotor();
+//	wheel[2].stopMotor();
+//	wheel[3].stopMotor();
+	if(!rudder[0].fb.isStop)
+	rudder[0].stopMotor();
+	if(!rudder[1].fb.isStop)
+	rudder[1].stopMotor();
+	if(!screw.fb.isStop)
 	screw.stopMotor();
 }
 
 void Chassis::chassisOn()
 {
-	for(uint8_t i = 0;i < 4;i ++)
-	{
-		wheel[i].runMotor();
-	}
-	for(uint8_t i = 0;i < 2;i ++)
-	{
-		rudder[i].runMotor();
-	}
-	screw.runMotor();
+//	for(uint8_t i = 0;i < 4;i ++)
+//	{
+//		wheel[i].runMotor();
+//	}
+//	for(uint8_t i = 0;i < 2;i ++)
+//	{
+//		rudder[i].runMotor();
+//	}
+//	screw.runMotor();
 }
 
 	//获取当前机器人四个轮子的间距

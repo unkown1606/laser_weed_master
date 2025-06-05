@@ -33,7 +33,7 @@ struct Chassis
 	void changeWidth();	//丝杠宽度改变
 	void move();		//移动转向
 
-	//底盘脱离上力
+	//底盘脱力上力
 	void chassisExhaustion();
 	void chassisOn();
 };

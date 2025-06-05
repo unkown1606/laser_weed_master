@@ -173,6 +173,10 @@ void LKMotor::fbDataHandle(uint8_t *data)
 		fb.angle = ori.round * 360 + fb.encoder;
 		fb.positiveAng = (fb.encoder > 0 ? fb.encoder : (fb.encoder+360));
 	}
+	else if (cmd == cmdCtrlStop || cmd == cmdCtrlRun)
+	{
+		fb.isStop = cmd == cmdCtrlStop;
+	}
 }
 
 /******************************************************************/
