@@ -11,8 +11,9 @@ struct Chassis
 	float v;	//前向速度v
 	float w;	//转向角速度w
 	float u;	//丝杠速度
-	float alpha;	//右轮转向角
-	float beta;		//左轮转向角
+	float alpha = 0;	//右轮转向角
+	float beta = 0;		//左轮转向角
+	float isTurning = 0;
 
 	float r[2];				//右、左轮转弯半径
 	float vel[2];			//右、左轮前向速度

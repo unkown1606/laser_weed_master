@@ -87,7 +87,6 @@ struct LKMotor
 		float speed;	//速度
 		float encoder;	//编码器
 		float angle;	//总角度
-		float positiveAng;	//单环正角度，位于0到360之间
 		uint8_t isStop;
 	}fb;
 

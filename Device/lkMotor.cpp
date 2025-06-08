@@ -152,7 +152,7 @@ void LKMotor::fbDataHandle(uint8_t *data)
 		pidFb.iqKi = data[7];
 	}
 	// 控制指令反馈
-	else if (cmd == cmdCtrlTorque || cmd == cmdCtrlSpeed || cmd == cmdCtrlPostion1)
+	else if (cmd == cmdCtrlTorque || cmd == cmdCtrlSpeed || cmd == cmdCtrlIncrement || cmd == cmdCtrlPostion1)
 	{
 		// 原始数据
 		ori.temp = data[1];
@@ -171,7 +171,6 @@ void LKMotor::fbDataHandle(uint8_t *data)
 			ori.round++;
 		 ori.lastEncoder = ori.encoder;
 		fb.angle = ori.round * 360 + fb.encoder;
-		fb.positiveAng = (fb.encoder > 0 ? fb.encoder : (fb.encoder+360));
 	}
 	else if (cmd == cmdCtrlStop || cmd == cmdCtrlRun)
 	{

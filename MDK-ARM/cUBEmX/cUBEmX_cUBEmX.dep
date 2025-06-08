@@ -1140,8 +1140,8 @@ I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_tim.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_gpio.h)(0x668130E4)
 I (..\Task\board.h)(0x668130E4)
-F (..\Device\lkMotor.cpp)(0x68410A85)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Device -I ../Task -Wno-deprecated-register-I./RTE/_cUBEmX-ID:/Apps/Keil5/Pack/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H723xx -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32H723xx-o cubemx/lkmotor.o -MMD)
-I (..\Device\lkMotor.h)(0x68410A85)
+F (..\Device\lkMotor.cpp)(0x684508BE)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Device -I ../Task -Wno-deprecated-register-I./RTE/_cUBEmX-ID:/Apps/Keil5/Pack/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H723xx -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32H723xx-o cubemx/lkmotor.o -MMD)
+I (..\Device\lkMotor.h)(0x68450034)
 I (..\Core\Inc\main.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal.h)(0x668130E4)
 I (..\Core\Inc\stm32h7xx_hal_conf.h)(0x668130E4)
@@ -1224,8 +1224,8 @@ I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_tim.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_gpio.h)(0x668130E4)
 I (..\Task\board.h)(0x668130E4)
-F (..\Task\chassis.cpp)(0x684119B2)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Device -I ../Task -Wno-deprecated-register-I./RTE/_cUBEmX-ID:/Apps/Keil5/Pack/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H723xx -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32H723xx-o cubemx/chassis.o -MMD)
-I (..\Task\chassis.h)(0x6840FBF0)
+F (..\Task\chassis.cpp)(0x68450868)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Device -I ../Task -Wno-deprecated-register-I./RTE/_cUBEmX-ID:/Apps/Keil5/Pack/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H723xx -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32H723xx-o cubemx/chassis.o -MMD)
+I (..\Task\chassis.h)(0x6844F932)
 I (..\Core\Inc\main.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_hal.h)(0x668130E4)
 I (..\Core\Inc\stm32h7xx_hal_conf.h)(0x668130E4)
@@ -1267,7 +1267,7 @@ I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_gpio.h)(0x668130E4)
 I (..\Task\board.h)(0x668130E4)
 I (..\Device\dbus.h)(0x684049F1)
-I (..\Device\lkMotor.h)(0x68410A85)
+I (..\Device\lkMotor.h)(0x68450034)
 F (..\Task\gimbal.cpp)(0x68404725)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Device -I ../Task -Wno-deprecated-register-I./RTE/_cUBEmX-ID:/Apps/Keil5/Pack/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H723xx -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32H723xx-o cubemx/gimbal.o -MMD)
 I (..\Task\gimbal.h)(0x68404725)
 I (..\Core\Inc\main.h)(0x668130E4)
@@ -1312,7 +1312,7 @@ I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_gpio.h)(0x668130E4)
 I (..\Task\board.h)(0x668130E4)
 I (..\Task\slidetable.h)(0x668130E4)
 I (..\Device\laser.h)(0x668130E4)
-I (..\Device\lkmotor.h)(0x68410A85)
+I (..\Device\lkmotor.h)(0x68450034)
 I (..\Device\dbus.h)(0x684049F1)
 F (..\Task\board.cpp)(0x68411C0F)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Device -I ../Task -Wno-deprecated-register-I./RTE/_cUBEmX-ID:/Apps/Keil5/Pack/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H723xx -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32H723xx-o cubemx/board.o -MMD)
 I (..\Task\board.h)(0x668130E4)
@@ -1357,9 +1357,9 @@ I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_gpio.h)(0x668130E4)
 I (..\Device\dbus.h)(0x684049F1)
 I (..\Device\laser.h)(0x668130E4)
-I (..\Device\lkMotor.h)(0x68410A85)
+I (..\Device\lkMotor.h)(0x68450034)
 I (..\Device\vision.h)(0x668130E4)
-I (..\Task\chassis.h)(0x6840FBF0)
+I (..\Task\chassis.h)(0x6844F932)
 I (..\Task\gimbal.h)(0x68404725)
 I (..\Task\slidetable.h)(0x668130E4)
 F (..\Task\slidetable.cpp)(0x668130E4)(-xc++ -std=c++11 --target=arm-arm-none-eabi -mcpu=cortex-m7 -mfpu=fpv5-d16 -mfloat-abi=hard -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar -fno-exceptions-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -I ../Core/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc -I ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32H7xx/Include -I ../Drivers/CMSIS/Include -I ../Device -I ../Task -Wno-deprecated-register-I./RTE/_cUBEmX-ID:/Apps/Keil5/Pack/ARM/CMSIS/6.1.0/CMSIS/Core/Include-D__UVISION_VERSION="542" -DSTM32H723xx -D_RTE_ -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DSTM32H723xx-o cubemx/slidetable.o -MMD)
@@ -1404,6 +1404,6 @@ I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_tim.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_usart.h)(0x668130E4)
 I (..\Drivers\STM32H7xx_HAL_Driver\Inc\stm32h7xx_ll_gpio.h)(0x668130E4)
 I (..\Task\board.h)(0x668130E4)
-I (..\Device\lkmotor.h)(0x68410A85)
+I (..\Device\lkmotor.h)(0x68450034)
 I (..\Device\dbus.h)(0x684049F1)
 I (..\Task\slidetable.h)(0x668130E4)

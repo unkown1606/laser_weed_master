@@ -37,19 +37,19 @@ Chassis::Chassis()
 	// 设置PID参数
 	for(uint8_t i = 0;i < 4;i ++)
 	{
-		wheel[i].pidSet.angKp = 10;
+		wheel[i].pidSet.angKp = 1;
 		wheel[i].pidSet.spdKp = 1;
 		wheel[i].pidSet.iqKp = 1;
 		wheel[i].updatePid();
 	}
 	for(uint8_t i = 0;i < 2;i ++)
 	{
-		rudder[i].pidSet.angKp = 10;
+		rudder[i].pidSet.angKp = 1;
 		rudder[i].pidSet.spdKp = 1;
 		rudder[i].pidSet.iqKp = 1;
 		rudder[i].updatePid();
 	}
-	screw.pidSet.angKp = 10;
+	screw.pidSet.angKp = 1;
 	screw.pidSet.spdKp = 1;
 	screw.pidSet.iqKi = 1;
 	screw.updatePid();
@@ -62,12 +62,16 @@ void Chassis::changeWidth()
 
 void Chassis::move()
 {
+	if(isTurning == 1)
+	{
 	alpha = atan2(mech.width, 2*v/w + mech.length) * RADIAN_TO_DEGREE;
 	beta = atan2(mech.width, 2*v/w - mech.length) * RADIAN_TO_DEGREE;
 	r[0] = mech.width / (2 * sinf(alpha * DEGREE_TO_RADIAN));
 	r[1] = mech.width / (2 * sinf(beta * DEGREE_TO_RADIAN));
+	}
 	vel[0] = w * r[0];
 	vel[1] = w * r[1];
+
 	if (alpha > 90 && beta > 90)
 	{
 		alpha = alpha - 180;
@@ -78,12 +82,12 @@ void Chassis::move()
 	wheelSpd[0] = wheelSpd[2] = vel[0];
 	wheelSpd[1] = wheelSpd[3] = vel[1];
 
-	wheel[0].ctrlSpeed(0);
-	wheel[1].ctrlSpeed(0);
-	wheel[2].ctrlSpeed(0);
-	wheel[3].ctrlSpeed(0);
-	rudder[0].ctrlSpeed(0);
-	rudder[1].ctrlSpeed(0);
+	wheel[0].ctrlPosIncrement(0);
+	wheel[1].ctrlPosIncrement(0);
+	wheel[2].ctrlPosIncrement(0);
+	wheel[3].ctrlPosIncrement(0);
+	rudder[0].ctrlPositon(-beta * 9);
+	rudder[1].ctrlPositon(-alpha * 9);
 }
 
 void Chassis::ctrl()
@@ -91,12 +95,14 @@ void Chassis::ctrl()
 	if(ABS(rc.leftFB) > 0.1 && ABS(rc.leftLR) > 0.1)
 	{
 		//遥控器加偏置
-		v = rc.leftFB * 2000 - 10.204;
-		w = (v > 0 ? -1 : 1) * (rc.leftLR * 2000 + 10.204);
+		v = rc.leftFB * 2000;
+		w = (v > 0 ? -1 : 1) * rc.leftLR * 2000;
+		isTurning = 1;
 	}
 	else
 	{
 		v = w = 0;
+		isTurning = 0;
 	}
 	if(ABS(rc.rightLR) > 0.1)
 	{
@@ -117,12 +123,12 @@ void Chassis::chassisExhaustion()
 //	wheel[1].stopMotor();
 //	wheel[2].stopMotor();
 //	wheel[3].stopMotor();
-	if(!rudder[0].fb.isStop)
-	rudder[0].stopMotor();
-	if(!rudder[1].fb.isStop)
-	rudder[1].stopMotor();
-	if(!screw.fb.isStop)
-	screw.stopMotor();
+//	if(!rudder[0].fb.isStop)
+//	rudder[0].stopMotor();
+//	if(!rudder[1].fb.isStop)
+//	rudder[1].stopMotor();
+//	if(!screw.fb.isStop)
+//	screw.stopMotor();
 }
 
 void Chassis::chassisOn()
