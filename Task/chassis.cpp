@@ -62,15 +62,22 @@ void Chassis::changeWidth()
 
 void Chassis::move()
 {
-	if(isTurning == 1)
+	if(w != 0 || v!= 0)
 	{
-	alpha = atan2(mech.width, 2*v/w + mech.length) * RADIAN_TO_DEGREE;
-	beta = atan2(mech.width, 2*v/w - mech.length) * RADIAN_TO_DEGREE;
-	r[0] = mech.width / (2 * sinf(alpha * DEGREE_TO_RADIAN));
-	r[1] = mech.width / (2 * sinf(beta * DEGREE_TO_RADIAN));
+		if(w == 0)
+		{
+			vel[0] = vel[1] = v;
+		}
+		else
+		{
+			alpha = atan2(mech.width, 2*v/w + mech.length) * RADIAN_TO_DEGREE;
+			beta = atan2(mech.width, 2*v/w - mech.length) * RADIAN_TO_DEGREE;
+			r[0] = mech.width / (2 * sinf(alpha * DEGREE_TO_RADIAN));
+			r[1] = mech.width / (2 * sinf(beta * DEGREE_TO_RADIAN));
+			vel[0] = w * r[0];
+			vel[1] = w * r[1];
+		}
 	}
-	vel[0] = w * r[0];
-	vel[1] = w * r[1];
 
 	if (alpha > 90 && beta > 90)
 	{
@@ -79,30 +86,38 @@ void Chassis::move()
 		vel[0] = -vel[0];
 		vel[1] = -vel[1];
 	}
-	wheelSpd[0] = wheelSpd[2] = vel[0];
-	wheelSpd[1] = wheelSpd[3] = vel[1];
+	if(v == 0)
+	{
+		vel[0] = vel[1] = 0;
+	}
+	wheelSpd[0] = wheelSpd[2] = vel[0] * 0.001 * 5 * RADIAN_TO_DEGREE;
+	wheelSpd[1] = wheelSpd[3] = vel[1] * 0.001 * 5 * RADIAN_TO_DEGREE;
 
-	wheel[0].ctrlPosIncrement(0);
-	wheel[1].ctrlPosIncrement(0);
-	wheel[2].ctrlPosIncrement(0);
-	wheel[3].ctrlPosIncrement(0);
-	rudder[0].ctrlPositon(-beta * 9);
-	rudder[1].ctrlPositon(-alpha * 9);
+	for(uint8_t i=0;i<4;i++)
+	{
+		if((vel[0] || vel[1]) != 0 && wheel[i].fb.ready)
+		{
+			wheel[i].ctrlPositon(wheel[i].fb.encoder + 100, (uint16_t)wheelSpd[i]);
+		}
+		else
+		{
+			wheel[i].ctrlSpeed(0);
+		}
+	}
+	rudder[0].ctrlPositon(-beta * 9, 300);
+	rudder[1].ctrlPositon(-alpha * 9, 300);
 }
 
 void Chassis::ctrl()
 {
-	if(ABS(rc.leftFB) > 0.1 && ABS(rc.leftLR) > 0.1)
+	if(ABS(rc.leftFB) < 0.1 && ABS(rc.leftLR) < 0.1)
 	{
-		//遥控器加偏置
-		v = rc.leftFB * 2000;
-		w = (v > 0 ? -1 : 1) * rc.leftLR * 2000;
-		isTurning = 1;
+		v = w = 0;
 	}
 	else
 	{
-		v = w = 0;
-		isTurning = 0;
+		v = rc.leftFB * 2000;
+		w = (v > 0 ? -1 : 1) * rc.leftLR * 2000;
 	}
 	if(ABS(rc.rightLR) > 0.1)
 	{
@@ -123,11 +138,8 @@ void Chassis::chassisExhaustion()
 //	wheel[1].stopMotor();
 //	wheel[2].stopMotor();
 //	wheel[3].stopMotor();
-//	if(!rudder[0].fb.isStop)
 //	rudder[0].stopMotor();
-//	if(!rudder[1].fb.isStop)
 //	rudder[1].stopMotor();
-//	if(!screw.fb.isStop)
 //	screw.stopMotor();
 }
 

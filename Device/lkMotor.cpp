@@ -109,30 +109,18 @@ void LKMotor::ctrlSpeed(float speed)
 }
 
 // 多圈位置控制
-void LKMotor::ctrlPositon(double pos)
+void LKMotor::ctrlPositon(double pos, uint16_t maxSpeed)
 {
 	CanMsg msg(info.canx, info.canId);
 	msg.data[0] = cmdCtrlPostion1;
 
 	int32_t posControl =pos*100;
+	msg.data[2] = *(uint8_t *)(&maxSpeed);
+	msg.data[3] = *((uint8_t *)(&maxSpeed) + 1);
 	msg.data[4] = *(uint8_t *)(&posControl);
 	msg.data[5] = *((uint8_t *)(&posControl) + 1);
 	msg.data[6] = *((uint8_t *)(&posControl) + 2);
 	msg.data[7] = *((uint8_t *)(&posControl) + 3);
-	sendMotorMsg(msg);
-}
-
-// 增量位置控制
-void LKMotor::ctrlPosIncrement(double inc)
-{
-	CanMsg msg(info.canx, info.canId);
-	msg.data[0] = cmdCtrlIncrement;
-
-	int32_t incControl =inc*100;
-	msg.data[4] = *(uint8_t *)(&incControl);
-	msg.data[5] = *((uint8_t *)(&incControl) + 1);
-	msg.data[6] = *((uint8_t *)(&incControl) + 2);
-	msg.data[7] = *((uint8_t *)(&incControl) + 3);
 	sendMotorMsg(msg);
 }
 
@@ -152,7 +140,7 @@ void LKMotor::fbDataHandle(uint8_t *data)
 		pidFb.iqKi = data[7];
 	}
 	// 控制指令反馈
-	else if (cmd == cmdCtrlTorque || cmd == cmdCtrlSpeed || cmd == cmdCtrlIncrement || cmd == cmdCtrlPostion1)
+	else if (cmd == cmdCtrlTorque || cmd == cmdCtrlSpeed || cmd == cmdCtrlPostion1)
 	{
 		// 原始数据
 		ori.temp = data[1];
@@ -171,6 +159,7 @@ void LKMotor::fbDataHandle(uint8_t *data)
 			ori.round++;
 		 ori.lastEncoder = ori.encoder;
 		fb.angle = ori.round * 360 + fb.encoder;
+		fb.ready = 1;
 	}
 	else if (cmd == cmdCtrlStop || cmd == cmdCtrlRun)
 	{

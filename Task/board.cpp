@@ -19,7 +19,7 @@ uint8_t isExhaustion = 1;
 
 void allInit()
 {
-	
+
     SysTick_Config(SystemCoreClock / TICK_PER_SECOND);
 	
     // 滴答定时器优先级初始化
