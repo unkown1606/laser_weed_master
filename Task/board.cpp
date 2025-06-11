@@ -40,32 +40,40 @@ void schedule()
 {
 	sysTickTime++;
 	
-	if(sysTickTime % 500 ==0)
+	if(sysTickTime % 500 == 0)
 	{
 		LL_GPIO_TogglePin(GPIOG,LL_GPIO_PIN_7);
 		LL_GPIO_TogglePin(GPIOF,LL_GPIO_PIN_4);
 	}
 
+	if(sysTickTime % 20 == 0)
+	{
+		//SWB脱力上力
+		if(rc.swB == 0 && isExhaustion == 1)
+		{
+			uint8_t chassisOK = chassis.chassisExhaustion();
+//			uint8_t gimbalOK = gimbal.gimbalExhaustion();
+			if(chassisOK)
+			{
+				isExhaustion = 0;
+			}
+		}
+		else if(rc.swB != 0 && isExhaustion == 0)
+		{
+			uint8_t chassisOK = chassis.chassisOn();
+//			uint8_t gimbalOK = gimbal.gimbalOn();
+			if(chassisOK)
+			{
+				isExhaustion = 1;
+			}
+		}
+	}
 
-	if(sysTickTime%2 == 0)
+	if(sysTickTime % 2 == 0)
 	{
 		chassis.ctrl();
 //		multiTable.ctrlMain();
 		gimbal.ctrlMain();
-
-		//SWB脱力上力
-		if(rc.swB == 0 && isExhaustion == 1)
-		{
-			isExhaustion = 0;
-			chassis.chassisExhaustion();
-			gimbal.gimbalExhaustion();
-		}
-		else if(rc.swB != 0 && isExhaustion == 0)
-		{
-			isExhaustion = 1;
-			chassis.chassisOn();
-			gimbal.gimbalOn();
-		}
 	}
 }
 

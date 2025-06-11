@@ -32,8 +32,8 @@ struct Chassis
 	void move();		//移动转向
 
 	//底盘脱力上力
-	void chassisExhaustion();
-	void chassisOn();
+	uint8_t chassisExhaustion();
+	uint8_t chassisOn();
 };
 
 

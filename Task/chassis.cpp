@@ -18,7 +18,7 @@ LKMotor rudder[2] = {
 };
 
 //丝杠电机
-LKMotor screw = LKMotor(lkCan2,1);
+LKMotor screw = LKMotor(lkCan2,3);
 
 #define MAX_WHEEL_SPD 1200
 
@@ -137,28 +137,32 @@ void Chassis::ctrl()
 	changeWidth();
 }
 
-void Chassis::chassisExhaustion()
+uint8_t Chassis::chassisExhaustion()
 {
-//	wheel[0].stopMotor();
-//	wheel[1].stopMotor();
-//	wheel[2].stopMotor();
-//	wheel[3].stopMotor();
-//	rudder[0].stopMotor();
-//	rudder[1].stopMotor();
-//	screw.stopMotor();
+	wheel[0].stopMotor();
+	wheel[1].stopMotor();
+	wheel[2].stopMotor();
+	wheel[3].stopMotor();
+	rudder[0].stopMotor();
+	rudder[1].stopMotor();
+	screw.stopMotor();
+	return (wheel[0].fb.isStop && wheel[1].fb.isStop && wheel[2].fb.isStop && wheel[3].fb.isStop && 
+			rudder[0].fb.isStop && rudder[1].fb.isStop && screw.fb.isStop);
 }
 
-void Chassis::chassisOn()
+uint8_t Chassis::chassisOn()
 {
-//	for(uint8_t i = 0;i < 4;i ++)
-//	{
-//		wheel[i].runMotor();
-//	}
-//	for(uint8_t i = 0;i < 2;i ++)
-//	{
-//		rudder[i].runMotor();
-//	}
-//	screw.runMotor();
+	for(uint8_t i = 0;i < 4;i ++)
+	{
+		wheel[i].runMotor();
+	}
+	for(uint8_t i = 0;i < 2;i ++)
+	{
+		rudder[i].runMotor();
+	}
+	screw.runMotor();
+	return (!wheel[0].fb.isStop && !wheel[1].fb.isStop && !wheel[2].fb.isStop && !wheel[3].fb.isStop && 
+			!rudder[0].fb.isStop && !rudder[1].fb.isStop && !screw.fb.isStop);
 }
 
 	//获取当前机器人四个轮子的间距

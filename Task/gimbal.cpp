@@ -16,8 +16,8 @@ Laser laser[4] = {
 	Laser(GPIOF, LL_GPIO_PIN_14, TIM2, LL_TIM_CHANNEL_CH2),
 };
 
-LKMotor yaw = LKMotor(lkCan2, 2);
-LKMotor pitch = LKMotor(lkCan2, 3);
+LKMotor yaw = LKMotor(lkCan2, 1);
+LKMotor pitch = LKMotor(lkCan2, 2);
 
 Gimbal::Gimbal()
 {
@@ -30,16 +30,18 @@ void Gimbal::ctrlMain()
 	pitch.ctrlSpeed(0);
 }
 
-void Gimbal::gimbalExhaustion()
+uint8_t Gimbal::gimbalExhaustion()
 {
 //	yaw.stopMotor();
 //	pitch.stopMotor();
+	return 0;
 }
 
-void Gimbal::gimbalOn()
+uint8_t Gimbal::gimbalOn()
 {
 //	yaw.runMotor();
 //	pitch.runMotor();
+	return 0;
 }
 
 //// X电机 前后

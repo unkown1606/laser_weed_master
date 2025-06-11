@@ -12,8 +12,8 @@ public:
 	void ctrlMain();
 
 	//云台脱力上力
-	void gimbalExhaustion();
-	void gimbalOn();
+	uint8_t gimbalExhaustion();
+	uint8_t gimbalOn();
 };
 
 
