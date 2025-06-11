@@ -3,7 +3,6 @@
 
 #include "main.h"
 #include "board.h"
-#include "slidetable.h"
 
 //云台
 struct Gimbal

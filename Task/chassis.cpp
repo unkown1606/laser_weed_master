@@ -6,19 +6,19 @@
 //轮电机
 LKMotor wheel[4] = {
 	LKMotor(lkCan1,1),
+	LKMotor(lkCan1,4),
 	LKMotor(lkCan1,2),
-	LKMotor(lkCan1,3),
-	LKMotor(lkCan1,4)
+	LKMotor(lkCan1,5)
 };
 
 //舵电机
 LKMotor rudder[2] = {
-	LKMotor(lkCan1,6),
-	LKMotor(lkCan1,5)
+	LKMotor(lkCan1,3),
+	LKMotor(lkCan1,6)
 };
 
 //丝杠电机
-LKMotor screw = LKMotor(lkCan1,7);
+LKMotor screw = LKMotor(lkCan2,1);
 
 #define MAX_WHEEL_SPD 1200
 
@@ -26,8 +26,6 @@ LKMotor screw = LKMotor(lkCan1,7);
 #define DEGREE_TO_RADIAN 0.017452f
 
 uint8_t enableMotorOut = 1 ;
-
-//LK电机不能用速度模式控制，应该用位置模式，当通讯连接不上时电机会持续执行最后的命令
 
 Chassis::Chassis()
 {
@@ -37,16 +35,16 @@ Chassis::Chassis()
 	// 设置PID参数
 	for(uint8_t i = 0;i < 4;i ++)
 	{
-		wheel[i].pidSet.angKp = 1;
-		wheel[i].pidSet.spdKp = 1;
-		wheel[i].pidSet.iqKp = 1;
+		wheel[i].pidSet.angKp = 100;
+		wheel[i].pidSet.spdKp = 80;
+		wheel[i].pidSet.iqKp = 60;
 		wheel[i].updatePid();
 	}
 	for(uint8_t i = 0;i < 2;i ++)
 	{
-		rudder[i].pidSet.angKp = 1;
-		rudder[i].pidSet.spdKp = 1;
-		rudder[i].pidSet.iqKp = 1;
+		rudder[i].pidSet.angKp = 100;
+		rudder[i].pidSet.spdKp = 80;
+		rudder[i].pidSet.iqKp = 60;
 		rudder[i].updatePid();
 	}
 	screw.pidSet.angKp = 1;
@@ -70,6 +68,7 @@ void Chassis::move()
 		}
 		else
 		{
+			//阿克曼转向，转角、速度的解算
 			alpha = atan2(mech.width, 2*v/w + mech.length) * RADIAN_TO_DEGREE;
 			beta = atan2(mech.width, 2*v/w - mech.length) * RADIAN_TO_DEGREE;
 			r[0] = mech.width / (2 * sinf(alpha * DEGREE_TO_RADIAN));
@@ -78,7 +77,7 @@ void Chassis::move()
 			vel[1] = w * r[1];
 		}
 	}
-
+	//将轮子在第三象限的解算结果映射到第一象限
 	if (alpha > 90 && beta > 90)
 	{
 		alpha = alpha - 180;
@@ -90,22 +89,27 @@ void Chassis::move()
 	{
 		vel[0] = vel[1] = 0;
 	}
-	wheelSpd[0] = wheelSpd[2] = vel[0] * 0.001 * 5 * RADIAN_TO_DEGREE;
-	wheelSpd[1] = wheelSpd[3] = vel[1] * 0.001 * 5 * RADIAN_TO_DEGREE;
+	//轮子速度单位从m/s换算到°/s
+	wheelSpd[0] = wheelSpd[2] = vel[0] * 5 * RADIAN_TO_DEGREE;
+	wheelSpd[1] = wheelSpd[3] = vel[1] * 5 * RADIAN_TO_DEGREE;
 
+	//轮电机减速比为1：8，舵电机减速比为1：9
 	for(uint8_t i=0;i<4;i++)
 	{
-		if((vel[0] || vel[1]) != 0 && wheel[i].fb.ready)
-		{
-			wheel[i].ctrlPositon(wheel[i].fb.encoder + 100, (uint16_t)wheelSpd[i]);
-		}
-		else
-		{
+//		if((vel[0] || vel[1]) != 0 && wheel[i].fb.ready)
+//		{
+//			//四个速度的运动方向
+//			uint8_t velSign = (i % 2 == 0 ? -1 : 1) * SIGN(wheelSpd[1]);
+//			//LK电机不能用速度模式控制，用增量位置模式，通过maxSpd控制速度，这样通讯连接不上时电机不会疯转
+//			wheel[i].ctrlIncrement(360 * 8* velSign, (uint32_t)(ABS(wheelSpd[1])));
+//		}
+//		else
+//		{
 			wheel[i].ctrlSpeed(0);
-		}
+//		}
 	}
-	rudder[0].ctrlPositon(-beta * 9, 300);
-	rudder[1].ctrlPositon(-alpha * 9, 300);
+	rudder[0].ctrlPositon(-alpha * 9, 300);
+	rudder[1].ctrlPositon(-beta * 9, 300);
 }
 
 void Chassis::ctrl()
@@ -116,8 +120,8 @@ void Chassis::ctrl()
 	}
 	else
 	{
-		v = rc.leftFB * 2000;
-		w = (v > 0 ? -1 : 1) * rc.leftLR * 2000;
+		v = rc.leftFB;	//速度最大为1m/s
+		w = (v > 0 ? -1 : 1) * rc.leftLR * 3.14 * 0.139;	//角速度最大为50rad/s
 	}
 	if(ABS(rc.rightLR) > 0.1)
 	{

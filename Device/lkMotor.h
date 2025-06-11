@@ -27,6 +27,7 @@ enum LkMotorCmd : uint8_t
 	cmdCtrlTorque = 0xA1,//转矩闭环
 	cmdCtrlSpeed = 0xA2,//速度闭环
 	cmdCtrlPostion1 = 0xA4,//位置闭环
+	cmdCtrlIncrement = 0xA8,//位置增量
 };
 
 class CanMsg
@@ -104,6 +105,7 @@ struct LKMotor
 	void ctrlCurent(float torque);
 	void ctrlSpeed(float speed);
 	void ctrlPositon(double pos, uint16_t maxSpeed);
+	void ctrlIncrement(double pos, uint32_t maxSpeed);
 	
 };
 #ifdef __cplusplus

@@ -5,8 +5,8 @@
 
 #include <stdint.h>
 
-#define SBUS_RX_BUF_NUM 16 ///< DMA数据长度
-#define RC_FRAME_LENGTH 25u ///<遙控器接收数据包长度
+#define SBUS_RX_BUF_NUM 16 //DMA数据长度
+#define RC_FRAME_LENGTH 25u //遙控器接收数据包长度
 /**************************
 		模式2
 	ch3			ch2

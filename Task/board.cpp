@@ -23,7 +23,7 @@ void allInit()
     SysTick_Config(SystemCoreClock / TICK_PER_SECOND);
 	
     // 滴答定时器优先级初始化
-    //NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 4, 0));
+    NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 4, 0));
 	//遥控器初始化
 	dbusInit();
 	//laserTimInit();
@@ -45,8 +45,8 @@ void schedule()
 		LL_GPIO_TogglePin(GPIOG,LL_GPIO_PIN_7);
 		LL_GPIO_TogglePin(GPIOF,LL_GPIO_PIN_4);
 	}
-	
-	
+
+
 	if(sysTickTime%2 == 0)
 	{
 		chassis.ctrl();

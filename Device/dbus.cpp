@@ -1,5 +1,3 @@
-
-
 #include "dbus.h"
 
 #define REMOTE_DEV SBUS
