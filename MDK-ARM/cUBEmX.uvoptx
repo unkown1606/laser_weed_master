@@ -183,7 +183,7 @@
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>isExhaustion</ItemText>
+          <ItemText>isExhaustion,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>7</count>
@@ -194,6 +194,11 @@
           <count>8</count>
           <WinNumber>1</WinNumber>
           <ItemText>gimbal</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>velSign,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

@@ -96,20 +96,21 @@ void Chassis::move()
 	//轮电机减速比为1：8，舵电机减速比为1：9
 	for(uint8_t i=0;i<4;i++)
 	{
-//		if((vel[0] || vel[1]) != 0 && wheel[i].fb.ready)
-//		{
-//			//四个速度的运动方向
-//			uint8_t velSign = (i % 2 == 0 ? -1 : 1) * SIGN(wheelSpd[1]);
-//			//LK电机不能用速度模式控制，用增量位置模式，通过maxSpd控制速度，这样通讯连接不上时电机不会疯转
-//			wheel[i].ctrlIncrement(360 * 8* velSign, (uint32_t)(ABS(wheelSpd[1])));
-//		}
-//		else
-//		{
+		if((vel[0] || vel[1]) != 0 && wheel[i].fb.ready)
+		{
+			//四个速度的运动方向
+			int8_t velSign = (i % 2 == 0 ? -1 : 1) * SIGN(wheelSpd[i]);
+			incrementPos[i] = 360 * 8 * velSign;
+			//LK电机不能用速度模式控制，用增量位置模式，通过maxSpd控制速度，这样通讯连接不上时电机不会疯转
+			wheel[i].ctrlIncrement(incrementPos[i], (uint32_t)(ABS(wheelSpd[i])));
+		}
+		else
+		{
 			wheel[i].ctrlSpeed(0);
-//		}
+		}
 	}
-	rudder[0].ctrlPositon(-alpha * 9, 300);
-	rudder[1].ctrlPositon(-beta * 9, 300);
+	rudder[0].ctrlPositon(alpha * 9, 500);
+	rudder[1].ctrlPositon(beta * 9, 500);
 }
 
 void Chassis::ctrl()
@@ -121,7 +122,7 @@ void Chassis::ctrl()
 	else
 	{
 		v = rc.leftFB;	//速度最大为1m/s
-		w = (v > 0 ? -1 : 1) * rc.leftLR * 3.14 * 0.139;	//角速度最大为50rad/s
+		w = (v > 0 ? -1 : 1) * rc.leftLR * 3.14 * 0.167;	//角速度最大为60rad/s
 	}
 	if(ABS(rc.rightLR) > 0.1)
 	{
