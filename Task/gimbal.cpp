@@ -32,16 +32,16 @@ void Gimbal::ctrlMain()
 
 uint8_t Gimbal::gimbalExhaustion()
 {
-//	yaw.stopMotor();
-//	pitch.stopMotor();
-	return 0;
+	yaw.stopMotor();
+	pitch.stopMotor();
+	return (yaw.fb.isStop && pitch.fb.isStop);
 }
 
 uint8_t Gimbal::gimbalOn()
 {
-//	yaw.runMotor();
-//	pitch.runMotor();
-	return 0;
+	yaw.runMotor();
+	pitch.runMotor();
+	return (!yaw.fb.isStop && !pitch.fb.isStop);
 }
 
 //// X电机 前后

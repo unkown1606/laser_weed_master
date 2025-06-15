@@ -3,6 +3,15 @@
 #include "dbus.h"
 #include "lkMotor.h"
 
+// 底盘电机序号示意
+//	   		wheel[1]	wheel[0]
+//				 |	  		|
+//				 |	  		|
+//		rudder[1]|----------|rudder[0]
+//				 |	  		|
+//				 |	  		|
+//	   		wheel[3]	 wheel[2]
+
 //轮电机
 LKMotor wheel[4] = {
 	LKMotor(lkCan1,1),
@@ -55,7 +64,33 @@ Chassis::Chassis()
 
 void Chassis::changeWidth()
 {
+	// 先将舵转向
+	rudder[0].ctrlPositon(90 * 9, 500);
+	rudder[1].ctrlPositon(90 * 9, 500);
+
+	// 丝杠运动解算
+	screwSpd = v;
 	screw.ctrlSpeed(0);
+
+	// 轮运动解算
+	for(uint8_t i=0;i<4;i++)
+	{
+		// 计算轮子速度
+		wheelSpd[i] = v * 5 * RADIAN_TO_DEGREE;
+		if((vel[0] || vel[1]) != 0 && wheel[i].fb.ready)
+		{
+			//四个速度的运动方向
+			int8_t velSign = (i < 2 ? -1 : 1) * SIGN(wheelSpd[i]);
+			incrementPos[i] = 360 * 8 * velSign;
+			//LK电机不能用速度模式控制，用增量位置模式，通过maxSpd控制速度，这样通讯连接不上时电机不会疯转
+			wheel[i].ctrlIncrement(incrementPos[i], (uint32_t)(ABS(wheelSpd[i])));
+		}
+		else
+		{
+			wheel[i].ctrlSpeed(0);
+		}
+	}
+
 }
 
 void Chassis::move()
@@ -111,6 +146,7 @@ void Chassis::move()
 	}
 	rudder[0].ctrlPositon(alpha * 9, 500);
 	rudder[1].ctrlPositon(beta * 9, 500);
+	screw.ctrlSpeed(0);
 }
 
 void Chassis::ctrl()
@@ -124,27 +160,36 @@ void Chassis::ctrl()
 		v = rc.leftFB;	//速度最大为1m/s
 		w = (v > 0 ? -1 : 1) * rc.leftLR * 3.14 * 0.167;	//角速度最大为60rad/s
 	}
-	if(ABS(rc.rightLR) > 0.1)
+//	if(ABS(rc.rightLR) > 0.1)
+//	{
+//		u = -rc.rightLR * 2000;
+//	}
+//	else
+//	{
+//		u = 0;
+//	}
+
+	// swB上拨为底盘运动，下拨为丝杠运动
+	if(rc.swB == 0)
 	{
-		u = -rc.rightLR * 2000;
+		move();
 	}
 	else
 	{
-		u = 0;
+		changeWidth();
 	}
-
-	move();
-	changeWidth();
 }
 
 uint8_t Chassis::chassisExhaustion()
 {
-	wheel[0].stopMotor();
-	wheel[1].stopMotor();
-	wheel[2].stopMotor();
-	wheel[3].stopMotor();
-	rudder[0].stopMotor();
-	rudder[1].stopMotor();
+	for(uint8_t i = 0;i < 4;i ++)
+	{
+		wheel[i].stopMotor();
+	}
+	for(uint8_t i = 0;i < 2;i ++)
+	{
+		rudder[i].stopMotor();
+	}
 	screw.stopMotor();
 	return (wheel[0].fb.isStop && wheel[1].fb.isStop && wheel[2].fb.isStop && wheel[3].fb.isStop && 
 			rudder[0].fb.isStop && rudder[1].fb.isStop && screw.fb.isStop);

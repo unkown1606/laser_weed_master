@@ -49,20 +49,20 @@ void schedule()
 	if(sysTickTime % 20 == 0)
 	{
 		//SWB脱力上力
-		if(rc.swB == 0 && isExhaustion == 1)
+		if(rc.swA == 0 && isExhaustion == 1)
 		{
 			uint8_t chassisOK = chassis.chassisExhaustion();
-//			uint8_t gimbalOK = gimbal.gimbalExhaustion();
-			if(chassisOK)
+			uint8_t gimbalOK = gimbal.gimbalExhaustion();
+			if(chassisOK && gimbalOK)
 			{
 				isExhaustion = 0;
 			}
 		}
-		else if(rc.swB != 0 && isExhaustion == 0)
+		else if(rc.swA != 0 && isExhaustion == 0)
 		{
 			uint8_t chassisOK = chassis.chassisOn();
-//			uint8_t gimbalOK = gimbal.gimbalOn();
-			if(chassisOK)
+			uint8_t gimbalOK = gimbal.gimbalOn();
+			if(chassisOK && gimbalOK)
 			{
 				isExhaustion = 1;
 			}
