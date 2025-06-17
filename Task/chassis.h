@@ -10,7 +10,7 @@ struct Chassis
 
 	float v;	//前向速度v
 	float w;	//转向角速度w
-	float u;	//
+	float u;	//丝杠移动速度
 	float alpha = 0;	//右轮转向角
 	float beta = 0;		//左轮转向角
 
@@ -21,6 +21,9 @@ struct Chassis
 	float rudderAng[2];		//右左两侧舵电机角度
 	
 	float screwSpd;		// 丝杠速度
+	float screwIncrement;	// 丝杠位置增量
+	float screwPoint;	// 丝杠零点位置
+	float screwDis;		// 丝杠位移
 
 	struct 
 	{

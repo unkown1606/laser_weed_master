@@ -21,7 +21,7 @@ LKMotor pitch = LKMotor(lkCan2, 2);
 
 Gimbal::Gimbal()
 {
-	
+	// pitch电机减速比为1:10，yaw电机减速比为1:9
 };
 
 void Gimbal::ctrlMain()
