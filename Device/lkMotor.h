@@ -18,9 +18,11 @@ enum LKMotorCanNum : uint8_t
 
 enum LkMotorCmd : uint8_t
 {
-	cmdReadPid = 0x30,	//读取PID参数
-	cmdWritePidRam = 0x31,//写入PID参数到RAM
-	cmdWritePidRom = 0x32,//写入PID参数到ROM
+	cmdReadPid = 0xC0,	//读取PID参数
+	cmdWritePidRam = 0xC1,//写入PID参数到RAM
+	cmdPidAng = 0x0A,	//角度环PID
+	cmdPidSpd = 0x0B,	//速度环PID
+	cmdPidCur = 0x0C,	//位置环PID
 	cmdSetAngle = 0x95,//写入当前位置到RAM
 	cmdCtrlStop = 0x80,//电机进入关闭状态
 	cmdCtrlRun = 0x88,//电机进入开启状态
@@ -61,13 +63,15 @@ struct LKMotor
 	
 	//PID参数
 	struct{
-		uint8_t angKp;
-		uint8_t angKi;
-		uint8_t spdKp;
-		uint8_t spdKi;
-		uint8_t iqKp;
-		uint8_t iqKi;
-		uint8_t writeToRom;
+		uint16_t angKp;
+		uint16_t angKi;
+		uint16_t angKd;
+		uint16_t spdKp;
+		uint16_t spdKi;
+		uint16_t spdKd;
+		uint16_t curKp;
+		uint16_t curKi;
+		uint16_t curKd;
 	}pidSet,pidFb;
 	//原始数据
 	struct 

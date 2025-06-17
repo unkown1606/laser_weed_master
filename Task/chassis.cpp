@@ -39,26 +39,26 @@ uint8_t enableMotorOut = 1 ;
 Chassis::Chassis()
 {
 	mech.width = 0.875;
-	mech.length = 1.345;
+	mech.length = 1.045;
 
 	// 设置PID参数
 	for(uint8_t i = 0;i < 4;i ++)
 	{
-		wheel[i].pidSet.angKp = 100;
-		wheel[i].pidSet.spdKp = 80;
-		wheel[i].pidSet.iqKp = 60;
+		wheel[i].pidSet.angKp = 50;
+		wheel[i].pidSet.spdKp = 10;
+		wheel[i].pidSet.curKp = 20;
 		wheel[i].updatePid();
 	}
 	for(uint8_t i = 0;i < 2;i ++)
 	{
 		rudder[i].pidSet.angKp = 100;
 		rudder[i].pidSet.spdKp = 80;
-		rudder[i].pidSet.iqKp = 60;
+		rudder[i].pidSet.curKp = 100;
 		rudder[i].updatePid();
 	}
-	screw.pidSet.angKp = 1;
-	screw.pidSet.spdKp = 1;
-	screw.pidSet.iqKi = 1;
+	screw.pidSet.angKp = 80;
+	screw.pidSet.spdKp = 150;
+	screw.pidSet.curKp = 200;
 	screw.updatePid();
 	// 记录丝杠零点
 	screwPoint = screw.fb.angle;
@@ -73,12 +73,18 @@ void Chassis::changeWidth()
 	// 丝杠运动解算，丝杠减速比为9:1
 	screwSpd = u / 0.005 * 360;
 	screwIncrement = 360 * 9 * SIGN(screwSpd);
-	//screw.ctrlIncrement(screwIncrement, (uint32_t)(9 * ABS(screwSpd)));
-	screw.ctrlSpeed(0);
-	screwDis = (screw.fb.angle - screwPoint) / 360 * 0.005;
-	if (ABS(screwDis) > 0.01)
+	if(u != 0 && screw.fb.ready)
 	{
-		mech.length = mech.length - screwDis;
+		screw.ctrlIncrement(screwIncrement, (uint32_t)(9 * ABS(screwSpd)));
+	}
+	else
+	{
+		screw.ctrlSpeed(0);
+	}
+	screwDis = (screw.fb.angle - screwPoint) / 360 * 0.005;
+	if (ABS(screwDis) > 0.001)
+	{
+		mech.length = 1.045 + screwDis;
 	}
 	if(mech.length > 1.345)
 	{
@@ -92,14 +98,14 @@ void Chassis::changeWidth()
 	// 轮运动解算
 	for(uint8_t i=0;i<4;i++)
 	{
-		// 计算轮子速度
-		wheelSpd[i] = (i < 2 ? -1 : 1) * u / 0.115 * 360;
+		// 计算轮子速度，速度要为丝杠的一半，因为两侧轮子同时运动
+		wheelSpd[i] = (i < 2 ? 1 : -1) * u / 0.115 * 360 * 0.5;
+		// 四个速度的运动方向
+		int8_t velSign = (i < 2 ? 1 : -1);
+		incrementPos[i] = 360 * 8 * velSign;
 		if(u != 0 && wheel[i].fb.ready)
 		{
-			//四个速度的运动方向
-			int8_t velSign = (i < 2 ? -1 : 1);
-			incrementPos[i] = 360 * 8 * velSign;
-			//LK电机不能用速度模式控制，用增量位置模式，通过maxSpd控制速度，这样通讯连接不上时电机不会疯转
+			// LK电机不能用速度模式控制，用增量位置模式，通过maxSpd控制速度，这样通讯连接不上时电机不会疯转
 			wheel[i].ctrlIncrement(incrementPos[i], (uint32_t)(8 * ABS(wheelSpd[i])));
 		}
 		else
@@ -107,7 +113,6 @@ void Chassis::changeWidth()
 			wheel[i].ctrlSpeed(0);
 		}
 	}
-
 }
 
 void Chassis::move()
@@ -180,9 +185,16 @@ void Chassis::ctrl()
 			rc.leftFB = rc.leftFB;
 			rc.leftLR = rc.leftLR;
 		}
-		v = rc.leftFB * 0.2;	// 底盘移动速度最大为0.2m/s
-		w = (v > 0 ? -1 : 1) * rc.leftLR * 0.2;	// 角速度最大为0.2rad/s
-		u = rc.leftFB * 0.005;	// 丝杠移动速度最大为0.01m/s
+		v = rc.leftFB * 0.05;	// 底盘移动速度最大为0.05m/s
+		w = (v > 0 ? -1 : 1) * rc.leftLR * 0.05;	// 角速度最大为0.05rad/s
+	}
+	if(ABS(rc.leftFB) < 0.1)
+	{
+		u = 0;
+	}
+	else
+	{
+		u = rc.leftFB * 0.005*0.5;	// 丝杠移动速度最大为0.01m/s
 	}
 //	if(ABS(rc.rightLR) > 0.1)
 //	{
@@ -233,8 +245,8 @@ uint8_t Chassis::chassisOn()
 	return (!wheel[0].fb.isStop && !wheel[1].fb.isStop && !wheel[2].fb.isStop && !wheel[3].fb.isStop && 
 			!rudder[0].fb.isStop && !rudder[1].fb.isStop && !screw.fb.isStop);
 //	//调试某个电机用
-//	wheel[2].runMotor();
-//	return (!wheel[2].fb.isStop);
+//	screw.runMotor();
+//	return (!screw.fb.isStop);
 }
 
 	//获取当前机器人四个轮子的间距

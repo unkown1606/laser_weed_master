@@ -3,7 +3,7 @@
 <title>Static Call Graph - [cUBEmX\cUBEmX.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image cUBEmX\cUBEmX.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6230001: Last Updated: Tue Jun 17 18:07:51 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6230001: Last Updated: Tue Jun 17 22:01:52 2025
 <BR><P>
 <H3>Maximum Stack Usage =        324 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1588,7 +1588,7 @@ Global Symbols
 
 <P><STRONG><a name="[222]"></a>Gimbal::Gimbal__sub_object()</STRONG> (Thumb, 10 bytes, Stack size 4 bytes, gimbal.o(.text._ZN6GimbalC2Ev), UNUSED)
 
-<P><STRONG><a name="[1ae]"></a>Chassis::changeWidth()</STRONG> (Thumb, 728 bytes, Stack size 72 bytes, chassis.o(.text._ZN7Chassis11changeWidthEv))
+<P><STRONG><a name="[1ae]"></a>Chassis::changeWidth()</STRONG> (Thumb, 856 bytes, Stack size 72 bytes, chassis.o(.text._ZN7Chassis11changeWidthEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = Chassis::changeWidth() &rArr; LKMotor::ctrlIncrement(double, unsigned int) &rArr; sendMotorMsg &rArr; HAL_FDCAN_AddMessageToTxFifoQ &rArr; FDCAN_CopyMessageToRAM
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LKMotor::ctrlIncrement(double, unsigned int)
@@ -1598,7 +1598,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis::ctrl()
 </UL>
 
-<P><STRONG><a name="[1b1]"></a>Chassis::chassisExhaustion()</STRONG> (Thumb, 282 bytes, Stack size 24 bytes, chassis.o(.text._ZN7Chassis17chassisExhaustionEv))
+<P><STRONG><a name="[1b1]"></a>Chassis::chassisExhaustion()</STRONG> (Thumb, 278 bytes, Stack size 24 bytes, chassis.o(.text._ZN7Chassis17chassisExhaustionEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = Chassis::chassisExhaustion() &rArr; LKMotor::stopMotor() &rArr; sendMotorMsg &rArr; HAL_FDCAN_AddMessageToTxFifoQ &rArr; FDCAN_CopyMessageToRAM
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LKMotor::stopMotor()
@@ -1606,7 +1606,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;schedule
 </UL>
 
-<P><STRONG><a name="[1b2]"></a>Chassis::ctrl()</STRONG> (Thumb, 504 bytes, Stack size 40 bytes, chassis.o(.text._ZN7Chassis4ctrlEv))
+<P><STRONG><a name="[1b2]"></a>Chassis::ctrl()</STRONG> (Thumb, 624 bytes, Stack size 40 bytes, chassis.o(.text._ZN7Chassis4ctrlEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = Chassis::ctrl() &rArr; Chassis::move() &rArr; LKMotor::ctrlIncrement(double, unsigned int) &rArr; sendMotorMsg &rArr; HAL_FDCAN_AddMessageToTxFifoQ &rArr; FDCAN_CopyMessageToRAM
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis::move()
@@ -1615,7 +1615,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;schedule
 </UL>
 
-<P><STRONG><a name="[1b3]"></a>Chassis::move()</STRONG> (Thumb, 968 bytes, Stack size 72 bytes, chassis.o(.text._ZN7Chassis4moveEv))
+<P><STRONG><a name="[1b3]"></a>Chassis::move()</STRONG> (Thumb, 960 bytes, Stack size 72 bytes, chassis.o(.text._ZN7Chassis4moveEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 200<LI>Call Chain = Chassis::move() &rArr; LKMotor::ctrlIncrement(double, unsigned int) &rArr; sendMotorMsg &rArr; HAL_FDCAN_AddMessageToTxFifoQ &rArr; FDCAN_CopyMessageToRAM
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_sinf
@@ -1627,7 +1627,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis::ctrl()
 </UL>
 
-<P><STRONG><a name="[1b6]"></a>Chassis::chassisOn()</STRONG> (Thumb, 282 bytes, Stack size 24 bytes, chassis.o(.text._ZN7Chassis9chassisOnEv))
+<P><STRONG><a name="[1b6]"></a>Chassis::chassisOn()</STRONG> (Thumb, 278 bytes, Stack size 24 bytes, chassis.o(.text._ZN7Chassis9chassisOnEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = Chassis::chassisOn() &rArr; LKMotor::runMotor() &rArr; sendMotorMsg &rArr; HAL_FDCAN_AddMessageToTxFifoQ &rArr; FDCAN_CopyMessageToRAM
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LKMotor::runMotor()
@@ -1635,7 +1635,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[17a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;schedule
 </UL>
 
-<P><STRONG><a name="[1b7]"></a>Chassis::Chassis()</STRONG> (Thumb, 278 bytes, Stack size 32 bytes, chassis.o(.text._ZN7ChassisC2Ev))
+<P><STRONG><a name="[1b7]"></a>Chassis::Chassis()</STRONG> (Thumb, 254 bytes, Stack size 32 bytes, chassis.o(.text._ZN7ChassisC2Ev))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = Chassis::Chassis() &rArr; LKMotor::updatePid() &rArr; sendMotorMsg &rArr; HAL_FDCAN_AddMessageToTxFifoQ &rArr; FDCAN_CopyMessageToRAM
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1b8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LKMotor::updatePid()
@@ -1643,7 +1643,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[19d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__cxx_global_var_init
 </UL>
 
-<P><STRONG><a name="[223]"></a>Chassis::Chassis__sub_object()</STRONG> (Thumb, 278 bytes, Stack size 32 bytes, chassis.o(.text._ZN7ChassisC2Ev), UNUSED)
+<P><STRONG><a name="[223]"></a>Chassis::Chassis__sub_object()</STRONG> (Thumb, 254 bytes, Stack size 32 bytes, chassis.o(.text._ZN7ChassisC2Ev), UNUSED)
 
 <P><STRONG><a name="[1af]"></a>LKMotor::ctrlPositon(double, unsigned short)</STRONG> (Thumb, 120 bytes, Stack size 48 bytes, lkmotor.o(.text._ZN7LKMotor11ctrlPositonEdt))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = LKMotor::ctrlPositon(double, unsigned short) &rArr; sendMotorMsg &rArr; HAL_FDCAN_AddMessageToTxFifoQ &rArr; FDCAN_CopyMessageToRAM
@@ -1655,7 +1655,7 @@ Global Symbols
 <LI><a href="#[1ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis::changeWidth()
 </UL>
 
-<P><STRONG><a name="[1a5]"></a>LKMotor::fbDataHandle(unsigned char*)</STRONG> (Thumb, 396 bytes, Stack size 16 bytes, lkmotor.o(.text._ZN7LKMotor12fbDataHandleEPh))
+<P><STRONG><a name="[1a5]"></a>LKMotor::fbDataHandle(unsigned char*)</STRONG> (Thumb, 504 bytes, Stack size 16 bytes, lkmotor.o(.text._ZN7LKMotor12fbDataHandleEPh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = LKMotor::fbDataHandle(unsigned char*)
 </UL>
 <BR>[Called By]<UL><LI><a href="#[cc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;motorCallBack(LKMotorCanNum, unsigned short, unsigned char*)
@@ -1702,7 +1702,7 @@ Global Symbols
 <LI><a href="#[1b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis::chassisExhaustion()
 </UL>
 
-<P><STRONG><a name="[1b8]"></a>LKMotor::updatePid()</STRONG> (Thumb, 280 bytes, Stack size 56 bytes, lkmotor.o(.text._ZN7LKMotor9updatePidEv))
+<P><STRONG><a name="[1b8]"></a>LKMotor::updatePid()</STRONG> (Thumb, 452 bytes, Stack size 56 bytes, lkmotor.o(.text._ZN7LKMotor9updatePidEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = LKMotor::updatePid() &rArr; sendMotorMsg &rArr; HAL_FDCAN_AddMessageToTxFifoQ &rArr; FDCAN_CopyMessageToRAM
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1ba]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sendMotorMsg
@@ -1711,7 +1711,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1b7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Chassis::Chassis()
 </UL>
 
-<P><STRONG><a name="[1bb]"></a>LKMotor::LKMotor(LKMotorCanNum, int)</STRONG> (Thumb, 88 bytes, Stack size 24 bytes, lkmotor.o(.text._ZN7LKMotorC2E13LKMotorCanNumi))
+<P><STRONG><a name="[1bb]"></a>LKMotor::LKMotor(LKMotorCanNum, int)</STRONG> (Thumb, 84 bytes, Stack size 24 bytes, lkmotor.o(.text._ZN7LKMotorC2E13LKMotorCanNumi))
 <BR><BR>[Stack]<UL><LI>Max Depth = 28<LI>Call Chain = LKMotor::LKMotor(LKMotorCanNum, int) &rArr; LKMotor::'unnamed2'::__sub_object()
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1bc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LKMotor::'unnamed2'::__sub_object()
@@ -1723,7 +1723,7 @@ Global Symbols
 <LI><a href="#[19f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__cxx_global_var_init
 </UL>
 
-<P><STRONG><a name="[224]"></a>LKMotor::LKMotor__sub_object(LKMotorCanNum, int)</STRONG> (Thumb, 88 bytes, Stack size 24 bytes, lkmotor.o(.text._ZN7LKMotorC2E13LKMotorCanNumi), UNUSED)
+<P><STRONG><a name="[224]"></a>LKMotor::LKMotor__sub_object(LKMotorCanNum, int)</STRONG> (Thumb, 84 bytes, Stack size 24 bytes, lkmotor.o(.text._ZN7LKMotorC2E13LKMotorCanNumi), UNUSED)
 
 <P><STRONG><a name="[1bc]"></a>LKMotor::'unnamed2'::__sub_object()</STRONG> (Thumb, 14 bytes, Stack size 4 bytes, lkmotor.o(.text._ZN7LKMotorUt2_C2Ev))
 <BR><BR>[Stack]<UL><LI>Max Depth = 4<LI>Call Chain = LKMotor::'unnamed2'::__sub_object()
@@ -3151,7 +3151,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[19b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;visionCallBack
 </UL>
 
-<P><STRONG><a name="[19f]"></a>__cxx_global_var_init</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, chassis.o(.text.__cxx_global_var_init))
+<P><STRONG><a name="[19f]"></a>__cxx_global_var_init</STRONG> (Thumb, 66 bytes, Stack size 16 bytes, chassis.o(.text.__cxx_global_var_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 44<LI>Call Chain = __cxx_global_var_init &rArr; LKMotor::LKMotor(LKMotorCanNum, int) &rArr; LKMotor::'unnamed2'::__sub_object()
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LKMotor::LKMotor(LKMotorCanNum, int)

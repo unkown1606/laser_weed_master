@@ -14,7 +14,6 @@ LKMotor::LKMotor(LKMotorCanNum canx, int motorid)
 
 	// 添加映射
 	lkMotorMap[canx][info.motorId-1] = this;
-	pidSet.writeToRom = 0;
 	ori.lastEncoder = 8191;
 	info.maxSpeedLimit = 5000;	//dps
 }
@@ -34,35 +33,52 @@ void LKMotor::readPid()
 void LKMotor::updatePid()
 {
 	bool isPidNoChange = true;
-	isPidNoChange = pidSet.angKp == pidFb.angKp && pidSet.spdKp == pidFb.spdKp && pidSet.iqKp == pidFb.iqKp &&
-					pidSet.angKi == pidFb.angKi && pidSet.spdKi == pidFb.spdKi && pidSet.iqKi == pidFb.iqKi;
+	isPidNoChange = pidSet.angKp == pidFb.angKp && pidSet.spdKp == pidFb.spdKp && pidSet.curKp == pidFb.curKp &&
+					pidSet.angKi == pidFb.angKi && pidSet.spdKi == pidFb.spdKi && pidSet.curKi == pidFb.curKi &&
+					pidSet.angKd == pidFb.angKd && pidSet.spdKd == pidFb.spdKd && pidSet.curKd == pidFb.curKd;
 	// 如果存在参数改变
 	if (!isPidNoChange)
 	{
 		CanMsg msg(info.canx, info.canId);
 		msg.data[0] = cmdWritePidRam;
-		msg.data[2] = pidSet.angKp;
-		msg.data[3] = pidSet.angKi;
-		msg.data[4] = pidSet.spdKp;
-		msg.data[5] = pidSet.spdKi;
-		msg.data[6] = pidSet.iqKp;
-		msg.data[7] = pidSet.iqKi;
+
+		uint16_t anglePidKp = pidSet.angKp;
+		uint16_t anglePidKi = pidSet.angKi;
+		uint16_t anglePidKd = pidSet.angKd;
+		msg.data[1] = cmdPidAng;
+		msg.data[2] = *(uint8_t *)(& anglePidKp);
+		msg.data[3] = *((uint8_t *)(& anglePidKp)+1);
+		msg.data[4] = *(uint8_t *)(& anglePidKi);;
+		msg.data[5] = *((uint8_t *)(& anglePidKi)+1);
+		msg.data[6] = *(uint8_t *)(& anglePidKd);;
+		msg.data[7] = *((uint8_t *)(& anglePidKd)+1);
+		sendMotorMsg(msg);
+
+		uint16_t speedPidKp = pidSet.spdKp;
+		uint16_t speedPidKi = pidSet.spdKi;
+		uint16_t speedPidKd = pidSet.spdKd;
+		msg.data[1] = cmdPidSpd;
+		msg.data[2] = *(uint8_t *)(& speedPidKp);
+		msg.data[3] = *((uint8_t *)(& speedPidKp)+1);
+		msg.data[4] = *(uint8_t *)(& speedPidKi);;
+		msg.data[5] = *((uint8_t *)(& speedPidKi)+1);
+		msg.data[6] = *(uint8_t *)(& speedPidKd);;
+		msg.data[7] = *((uint8_t *)(& speedPidKd)+1);
+		sendMotorMsg(msg);
+
+		uint16_t currentPidKp = pidSet.curKp;
+		uint16_t currentPidKi = pidSet.curKi;
+		uint16_t currentPidKd = pidSet.curKd;
+		msg.data[1] = cmdPidCur;
+		msg.data[2] = *(uint8_t *)(& currentPidKp);
+		msg.data[3] = *((uint8_t *)(& currentPidKp)+1);
+		msg.data[4] = *(uint8_t *)(& currentPidKi);;
+		msg.data[5] = *((uint8_t *)(& currentPidKi)+1);
+		msg.data[6] = *(uint8_t *)(& currentPidKd);;
+		msg.data[7] = *((uint8_t *)(& currentPidKd)+1);
 		sendMotorMsg(msg);
 	}
 
-	// 更新数据到电机ROM
-	if (pidSet.writeToRom != 0)
-	{
-		CanMsg msg(info.canx, info.canId);
-		msg.data[0] = cmdWritePidRom;
-		msg.data[2] = pidSet.angKp;
-		msg.data[3] = pidSet.angKi;
-		msg.data[4] = pidSet.spdKp;
-		msg.data[5] = pidSet.spdKi;
-		msg.data[6] = pidSet.iqKp;
-		msg.data[7] = pidSet.iqKi;
-		sendMotorMsg(msg);
-	}
 }
 
 // 电机关闭
@@ -146,21 +162,33 @@ void LKMotor::fbDataHandle(uint8_t *data)
 	uint8_t cmd = data[0];
 
 	// 更新PID参数
-	if (cmd == cmdReadPid || cmd == cmdWritePidRam || cmd == cmdWritePidRom)
+	if (cmd == cmdReadPid || cmd == cmdWritePidRam)
 	{
-		pidFb.angKp = data[2];
-		pidFb.angKi = data[3];
-		pidFb.spdKp = data[4];
-		pidFb.spdKi = data[5];
-		pidFb.iqKp = data[6];
-		pidFb.iqKi = data[7];
+		if (data[1] == cmdPidAng)
+		{
+			pidFb.angKp = data[2] | (data[3] << 8);
+			pidFb.angKi = data[4] | (data[5] << 8);
+			pidFb.angKd = data[6] | (data[7] << 8);
+		}
+		if (data[1] == cmdPidSpd)
+		{
+			pidFb.spdKp = data[2] | (data[3] << 8);
+			pidFb.spdKi = data[4] | (data[5] << 8);
+			pidFb.spdKd = data[6] | (data[7] << 8);
+		}
+		if (data[1] == cmdPidCur)
+		{
+			pidFb.curKp = data[2] | (data[3] << 8);
+			pidFb.curKi = data[4] | (data[5] << 8);
+			pidFb.curKd = data[6] | (data[7] << 8);
+		}
 	}
 	// 控制指令反馈
 	else if (cmd == cmdCtrlTorque || cmd == cmdCtrlSpeed || cmd == cmdCtrlPostion1 || cmd == cmdCtrlIncrement)
 	{
 		// 原始数据
 		ori.temp = data[1];
-		ori.torque = data[2] | (data[2] << 8);
+		ori.torque = data[2] | (data[3] << 8);
 		ori.speed = data[4] | (data[5] << 8);
 		ori.encoder = data[6] | (data[7] << 8);
 		// 处理
