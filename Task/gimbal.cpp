@@ -3,12 +3,6 @@
 #include "lkmotor.h"
 #include "dbus.h"
 
-// 尺寸（mm）
-#define RAIL_WIDTH 100	 // 滑轨宽度
-#define RAIL_LENGTH 200	 // 滑轨长度
-#define TABLE_WIDTH 100	 // 滑台宽度
-#define TABLE_LENGTH 200 // 滑台长度
-
 Laser laser[4] = {
 	Laser(GPIOD, LL_GPIO_PIN_8, TIM2, LL_TIM_CHANNEL_CH3),
 	Laser(GPIOE, LL_GPIO_PIN_15, TIM2, LL_TIM_CHANNEL_CH4),
@@ -21,13 +15,47 @@ LKMotor pitch = LKMotor(lkCan2, 2);
 
 Gimbal::Gimbal()
 {
-	// pitch电机减速比为1:10，yaw电机减速比为1:9
 };
 
 void Gimbal::ctrlMain()
 {
-	yaw.ctrlSpeed(0);
-	pitch.ctrlSpeed(0);
+	if(ABS(rc.rightFB) < 0.1 && ABS(rc.rightLR) < 0.1)
+	{
+		x = y = 0;
+	}
+	else
+	{
+		// yaw转动速度最大为30°/s,pitch转动速度最大为30°/s
+		x = rc.rightLR * 30;
+		y = rc.rightFB * 30;
+	}
+
+	if(x != 0 || y != 0)
+	{
+		yawSpd = x;
+		pitchSpd = y;
+		yawIncrement = 360 * 9 * SIGN(yawSpd);
+		pitchIncrement = 360 * 10 * SIGN(pitchSpd);
+	}
+
+	// pitch电机减速比为1:10，yaw电机减速比为1:9
+	if(x != 0 && yaw.fb.ready)
+	{
+		yaw.ctrlIncrement(yawIncrement, (uint32_t)(9 * ABS(yawSpd)));
+	}
+	else
+	{
+		yaw.ctrlSpeed(0);
+	}
+
+	if(y != 0 && pitch.fb.ready)
+	{
+		pitch.ctrlIncrement(pitchIncrement, (uint32_t)(10 * ABS(pitchSpd)));
+	}
+	else
+	{
+		pitch.ctrlSpeed(0);
+	}
 }
 
 uint8_t Gimbal::gimbalExhaustion()
@@ -42,6 +70,12 @@ uint8_t Gimbal::gimbalOn()
 	yaw.runMotor();
 	pitch.runMotor();
 	return (!yaw.fb.isStop && !pitch.fb.isStop);
+}
+
+void Gimbal::runLaser()
+{
+	laserPWM = rc.swC * 0.5;
+	laser[0].open(laserPWM);
 }
 
 //// X电机 前后

@@ -18,10 +18,7 @@ public:
 	void open(float powerIndex);
 	
 	void close();
-
 };
-
-
 
 #ifdef __cplusplus
 extern "C" {

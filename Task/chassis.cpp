@@ -129,7 +129,7 @@ void Chassis::changeWidth()
 
 void Chassis::move()
 {
-	if(w != 0 || v!= 0)
+	if(w != 0 || v != 0)
 	{
 		if(w == 0)
 		{

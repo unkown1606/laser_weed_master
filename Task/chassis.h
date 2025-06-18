@@ -19,7 +19,7 @@ struct Chassis
 	float wheelSpd[4];		//四个轮子的速度
 	float incrementPos[4];	//四个轮子的位置增量
 	float rudderAng[2];		//右左两侧舵电机角度
-	
+
 	float screwSpd;		// 丝杠速度
 	float screwIncrement;	// 丝杠位置增量
 	float screwPoint;	// 丝杠零点位置

@@ -52,22 +52,13 @@ void Laser::close()
 		LL_TIM_OC_SetCompareCH4(timer,ccr);
 }
 
-
-
-
-
-
-
-
-
 //激光初始化
 void laserTimInit()
 {
-	
     LL_TIM_CC_EnableChannel(TIM2, LL_TIM_CHANNEL_CH3);
     //LL_TIM_EnableDMAReq_CC3(TIM2);
     LL_TIM_EnableCounter(TIM2);    // 使能计数器
     LL_TIM_EnableAllOutputs(TIM2); // 使能输出
-	
+
 	//初始化频率为5KHz
 }
