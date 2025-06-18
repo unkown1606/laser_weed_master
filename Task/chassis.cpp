@@ -15,15 +15,15 @@
 //轮电机
 LKMotor wheel[4] = {
 	LKMotor(lkCan1,1),
-	LKMotor(lkCan1,4),
+	LKMotor(lkCan3,4),
 	LKMotor(lkCan1,2),
-	LKMotor(lkCan1,5)
+	LKMotor(lkCan3,5)
 };
 
 //舵电机
 LKMotor rudder[2] = {
 	LKMotor(lkCan1,3),
-	LKMotor(lkCan1,6)
+	LKMotor(lkCan3,6)
 };
 
 //丝杠电机
@@ -47,21 +47,33 @@ Chassis::Chassis()
 		wheel[i].pidSet.angKp = 50;
 		wheel[i].pidSet.spdKp = 10;
 		wheel[i].pidSet.curKp = 20;
-		wheel[i].updatePid();
 	}
 	for(uint8_t i = 0;i < 2;i ++)
 	{
 		rudder[i].pidSet.angKp = 100;
 		rudder[i].pidSet.spdKp = 80;
 		rudder[i].pidSet.curKp = 100;
-		rudder[i].updatePid();
 	}
 	screw.pidSet.angKp = 80;
 	screw.pidSet.spdKp = 150;
 	screw.pidSet.curKp = 200;
-	screw.updatePid();
+
 	// 记录丝杠零点
 	screwPoint = screw.fb.angle;
+}
+
+void Chassis::updatePid()
+{
+	// 更新PID参数
+	for(uint8_t i = 0;i < 4;i ++)
+	{
+		wheel[i].updatePid();
+	}
+	for(uint8_t i = 0;i < 2;i ++)
+	{
+		rudder[i].updatePid();
+	}
+	screw.updatePid();
 }
 
 void Chassis::changeWidth()

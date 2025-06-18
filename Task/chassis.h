@@ -32,6 +32,7 @@ struct Chassis
 		float setWidth;
 	}mech;
 
+	void updatePid();	// 更新PID参数
 	void ctrl();		//底盘的控制
 	void changeWidth();	//丝杠宽度改变
 	void move();		//移动转向

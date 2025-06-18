@@ -163,7 +163,7 @@
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>yaw</ItemText>
+          <ItemText>yaw,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
@@ -178,7 +178,7 @@
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>screw</ItemText>
+          <ItemText>screw,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
@@ -194,6 +194,26 @@
           <count>8</count>
           <WinNumber>1</WinNumber>
           <ItemText>gimbal</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>canMsg</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>dataTemp</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>cmd</ItemText>
+        </Ww>
+        <Ww>
+          <count>12</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>noExhaustion</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

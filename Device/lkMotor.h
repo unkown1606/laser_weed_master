@@ -22,7 +22,7 @@ enum LkMotorCmd : uint8_t
 	cmdWritePidRam = 0xC1,//写入PID参数到RAM
 	cmdPidAng = 0x0A,	//角度环PID
 	cmdPidSpd = 0x0B,	//速度环PID
-	cmdPidCur = 0x0C,	//位置环PID
+	cmdPidCur = 0x0C,	//电流环PID
 	cmdSetAngle = 0x95,//写入当前位置到RAM
 	cmdCtrlStop = 0x80,//电机进入关闭状态
 	cmdCtrlRun = 0x88,//电机进入开启状态

@@ -15,7 +15,9 @@ Gimbal gimbal;
 
 //-Wno-deprecated-register
 uint64_t sysTickTime = 0;
-uint8_t isExhaustion = 1;
+uint8_t chassisOK = 0;
+uint8_t gimbalOK = 0;
+uint8_t noExhaustion = 1;
 
 void allInit()
 {
@@ -45,27 +47,23 @@ void schedule()
 		LL_GPIO_TogglePin(GPIOG,LL_GPIO_PIN_7);
 		LL_GPIO_TogglePin(GPIOF,LL_GPIO_PIN_4);
 	}
-
-	if(sysTickTime % 20 == 0)
+	if(sysTickTime % 100 == 0)
 	{
+		chassis.updatePid();
+	}
+	if(sysTickTime % 50 == 0)
+	{
+		noExhaustion = !(chassisOK && gimbalOK);
 		//SWB脱力上力
-		if(rc.swA == 0 && isExhaustion == 1)
+		if(rc.swA == 0 && noExhaustion == 1)
 		{
-			uint8_t chassisOK = chassis.chassisExhaustion();
-			uint8_t gimbalOK = gimbal.gimbalExhaustion();
-			if(chassisOK && gimbalOK)
-			{
-				isExhaustion = 0;
-			}
+			chassisOK = chassis.chassisExhaustion();
+			gimbalOK = gimbal.gimbalExhaustion();
 		}
-		else if(rc.swA != 0 && isExhaustion == 0)
+		else if(rc.swA != 0 && noExhaustion == 0)
 		{
-			uint8_t chassisOK = chassis.chassisOn();
-			uint8_t gimbalOK = gimbal.gimbalOn();
-			if(chassisOK && gimbalOK)
-			{
-				isExhaustion = 1;
-			}
+			chassisOK = chassis.chassisOn();
+			gimbalOK = gimbal.gimbalOn();
 		}
 	}
 
