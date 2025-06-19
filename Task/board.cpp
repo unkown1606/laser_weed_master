@@ -32,9 +32,6 @@ void allInit()
 	
 	visionInit();
 	canInit();
-
-
-
 }
 
 //2O 3R 4G

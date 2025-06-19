@@ -203,17 +203,12 @@
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>dataTemp</ItemText>
+          <ItemText>noExhaustion</ItemText>
         </Ww>
         <Ww>
           <count>11</count>
           <WinNumber>1</WinNumber>
-          <ItemText>cmd</ItemText>
-        </Ww>
-        <Ww>
-          <count>12</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>noExhaustion</ItemText>
+          <ItemText>msg,0x10</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

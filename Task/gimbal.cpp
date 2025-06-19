@@ -15,7 +15,7 @@ LKMotor pitch = LKMotor(lkCan2, 2);
 
 Gimbal::Gimbal()
 {
-};
+}
 
 void Gimbal::ctrlMain()
 {
@@ -29,32 +29,53 @@ void Gimbal::ctrlMain()
 		x = rc.rightLR * 30;
 		y = rc.rightFB * 30;
 	}
+	runMotor();
+	runLaser();
+}
 
-	if(x != 0 || y != 0)
-	{
-		yawSpd = x;
-		pitchSpd = y;
-		yawIncrement = 360 * 9 * SIGN(yawSpd);
-		pitchIncrement = 360 * 10 * SIGN(pitchSpd);
-	}
-
+void Gimbal::runMotor()
+{
 	// pitch电机减速比为1:10，yaw电机减速比为1:9
-	if(x != 0 && yaw.fb.ready)
+	yawSpd = x;
+	pitchSpd = y;
+	yawIncrement = 360 * 90 * SIGN(yawSpd);
+	pitchIncrement = 360 * 10 * SIGN(pitchSpd);
+
+	// yaw电机运动空间检测，超出限位则停转
+	uint8_t yawOutlimit = 0;
+	if(yaw.fb.angle > -50)
 	{
-		yaw.ctrlIncrement(yawIncrement, (uint32_t)(9 * ABS(yawSpd)));
+		yawOutlimit = (yawSpd > 0 && yaw.fb.angle > limitYawHigh) || (yawSpd < 0 && yaw.fb.angle < limitYawLow);
 	}
 	else
+	{
+		yawOutlimit = (yawSpd > 0 && yaw.fb.angle > (limitYawHigh-360)) || (yawSpd < 0 && yaw.fb.angle < (limitYawLow-360));
+	}
+	if(yawOutlimit || ABS(x) < 0.3 || !yaw.fb.ready)
 	{
 		yaw.ctrlSpeed(0);
 	}
-
-	if(y != 0 && pitch.fb.ready)
+	else
 	{
-		pitch.ctrlIncrement(pitchIncrement, (uint32_t)(10 * ABS(pitchSpd)));
+		yaw.ctrlIncrement(yawIncrement, (uint32_t)(9 * ABS(yawSpd)));
+	}
+
+	uint8_t pitchOutlimit = 0;
+	if(pitch.fb.angle > -50)
+	{
+		pitchOutlimit = (pitchSpd > 0 && pitch.fb.angle > limitPitchHigh) || (pitchSpd < 0 && pitch.fb.angle < limitPitchLow);
 	}
 	else
 	{
+		pitchOutlimit = (pitchSpd > 0 && pitch.fb.angle > (limitPitchHigh-360)) || (pitchSpd < 0 && pitch.fb.angle < (limitPitchLow-360));
+	}
+	if(pitchOutlimit || ABS(y) < 0.2 || !pitch.fb.ready)
+	{
 		pitch.ctrlSpeed(0);
+	}
+	else
+	{
+		pitch.ctrlIncrement(pitchIncrement, (uint32_t)(10 * ABS(pitchSpd)));
 	}
 }
 
