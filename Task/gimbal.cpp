@@ -38,7 +38,7 @@ void Gimbal::runMotor()
 	// pitch电机减速比为1:10，yaw电机减速比为1:9
 	yawSpd = x;
 	pitchSpd = y;
-	yawIncrement = 360 * 90 * SIGN(yawSpd);
+	yawIncrement = 900 * 9 * SIGN(yawSpd);
 	pitchIncrement = 360 * 10 * SIGN(pitchSpd);
 
 	// yaw电机运动空间检测，超出限位则停转
@@ -95,8 +95,15 @@ uint8_t Gimbal::gimbalOn()
 
 void Gimbal::runLaser()
 {
-	laserPWM = rc.swC * 0.5;
-	laser[0].open(laserPWM);
+	if(rc.swC == 0)
+	{
+		laser[0].close();
+	}
+	else
+	{
+		laserPWM = rc.swC * 0.5;
+		laser[0].open(laserPWM);
+	}
 }
 
 //// X电机 前后

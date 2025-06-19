@@ -56,7 +56,7 @@ void Laser::close()
 void laserTimInit()
 {
     LL_TIM_CC_EnableChannel(TIM2, LL_TIM_CHANNEL_CH3);
-    //LL_TIM_EnableDMAReq_CC3(TIM2);
+    LL_TIM_EnableDMAReq_CC3(TIM2);
     LL_TIM_EnableCounter(TIM2);    // 使能计数器
     LL_TIM_EnableAllOutputs(TIM2); // 使能输出
 
