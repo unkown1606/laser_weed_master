@@ -25,7 +25,7 @@ void Gimbal::ctrlMain()
 	}
 	else
 	{
-		// yaw转动速度最大为30°/s,pitch转动速度最大为30°/s
+		// yaw转动速度最大为30,pitch转动速度最大为30
 		x = rc.rightLR * 30;
 		y = rc.rightFB * 30;
 	}
@@ -38,8 +38,8 @@ void Gimbal::runMotor()
 	// pitch电机减速比为1:10，yaw电机减速比为1:9
 	yawSpd = x;
 	pitchSpd = y;
-	yawIncrement = 900 * 9 * SIGN(yawSpd);
-	pitchIncrement = 360 * 10 * SIGN(pitchSpd);
+	yawPos = 5000 * SIGN(yawSpd);
+	pitchPos = 5000 * SIGN(pitchSpd);
 
 	// yaw电机运动空间检测，超出限位则停转
 	uint8_t yawOutlimit = 0;
@@ -57,9 +57,10 @@ void Gimbal::runMotor()
 	}
 	else
 	{
-		yaw.ctrlIncrement(yawIncrement, (uint32_t)(9 * ABS(yawSpd)));
+		yaw.ctrlPositon(yawPos, (uint16_t)(9 * ABS(yawSpd)));
 	}
 
+	// pitch电机运动
 	uint8_t pitchOutlimit = 0;
 	if(pitch.fb.angle > -50)
 	{
@@ -75,7 +76,7 @@ void Gimbal::runMotor()
 	}
 	else
 	{
-		pitch.ctrlIncrement(pitchIncrement, (uint32_t)(10 * ABS(pitchSpd)));
+		pitch.ctrlPositon(pitchPos, (uint16_t)(10 * ABS(pitchSpd)));
 	}
 }
 
@@ -95,6 +96,7 @@ uint8_t Gimbal::gimbalOn()
 
 void Gimbal::runLaser()
 {
+	// swC为1或2时启动激光，回0时关闭
 	if(rc.swC == 0)
 	{
 		laser[0].close();
